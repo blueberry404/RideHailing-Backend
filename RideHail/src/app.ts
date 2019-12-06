@@ -1,18 +1,26 @@
-const express = require('express');
-const app = express();
-const router = express.Router();
-const port = process.env.PORT || 8080;
-const routes = require('./routes');
+import express from 'express';
+import bodyParser from 'body-parser';
+import * as userRouter from './routes/users';
 
-//  Connect all our routes to our application
-app.use('/', routes);
+class App {
+  public app: express.Application;
+  public port: number;
 
-app.listen(port, function () {
-    console.log('App listening on port 8080!')
-  });
-      /*
-    npm run typeorm migration:run
-    
-    For parameter:
-    npm run typeorm migration:generate -- -n migrationNameHere
-    */
+  constructor(port: number) {
+    this.app = express();
+    this.port = port;
+
+    this.initializaMiddleWares();
+    this.registerRoutes();
+  }
+
+  private initializaMiddleWares() {
+    this.app.use(bodyParser.json());
+  }
+
+  private registerRoutes() {
+    this.app.use('/users', userRouter);
+  }
+}
+
+//https://github.com/microsoft/TypeScript-Node-Starter
