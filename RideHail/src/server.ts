@@ -1,15 +1,8 @@
-const express = require('express');
-const app = express();
-const router = express.Router();
-const port = process.env.PORT || 8080;
-const routes = require('./routes');
+import App from './app';
 
-//  Connect all our routes to our application
-app.use('/', routes);
-
-app.listen(port, function () {
-    console.log('App listening on port 8080!')
-  });
+const port = process.env.PORT || '8080';
+const app = new App(+port); //or parseInt(port);
+app.listen();
       /*
     npm run typeorm migration:run
     

@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import * as userRouter from './routes/users';
+import * as users from './controllers/users';
 
 class App {
   public app: express.Application;
@@ -10,17 +10,26 @@ class App {
     this.app = express();
     this.port = port;
 
+    //Express configuration
     this.initializaMiddleWares();
     this.registerRoutes();
   }
 
   private initializaMiddleWares() {
+    this.app.set("port", this.port);
     this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ extended: true }));
   }
 
   private registerRoutes() {
-    this.app.use('/users', userRouter);
+    this.app.get('/users', users.getAll);
+  }
+
+  public listen() {
+    this.app.listen(this.port, () => {
+      console.log(`App listening on the port ${this.port}`);
+    });
   }
 }
 
-//https://github.com/microsoft/TypeScript-Node-Starter
+export default App;
