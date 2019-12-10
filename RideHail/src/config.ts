@@ -1,10 +1,10 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, NODE_HOST } = process.env;
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env;
 
 const typeOrmConfig: PostgresConnectionOptions = {
     type: "postgres",
-    host: NODE_HOST,
+    host: POSTGRES_HOST,
     port: parseInt(POSTGRES_PORT ? POSTGRES_PORT : '5432'),
     username: POSTGRES_USER,
     password: POSTGRES_PASSWORD,

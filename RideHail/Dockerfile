@@ -1,14 +1,19 @@
 FROM node:10
-EXPOSE 8080
+EXPOSE 3000
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json .
+COPY package-lock.json .
 
 RUN npm install
+
+ADD . /app
+
+# Compile all typescript to javascript
+RUN npm run tsc
 
 # If you are building your code for production
 # RUN npm ci --only=production
 
-COPY . .
 CMD [ "node", "./build/server.js" ]

@@ -28,6 +28,7 @@ class App {
     }
     registerRoutes() {
         this.app.get('/users', users.getAll);
+        this.app.get('/users/bookRide', users.bookRide);
     }
     listen() {
         this.app.listen(this.port, () => {

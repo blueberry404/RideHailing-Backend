@@ -23,6 +23,7 @@ class App {
 
   private registerRoutes() {
     this.app.get('/users', users.getAll);
+    this.app.get('/users/bookRide', users.bookRide);
   }
 
   public listen() {

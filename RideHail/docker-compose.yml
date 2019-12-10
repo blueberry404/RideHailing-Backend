@@ -6,7 +6,7 @@ services:
         depends_on: 
             - postgres
         ports: 
-            - "8080:3000"
+            - "3000:3000"
     postgres:
         image: postgres:12.1
         ports: 

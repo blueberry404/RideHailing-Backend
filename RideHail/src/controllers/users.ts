@@ -1,23 +1,23 @@
 import { Request, Response } from 'express';
 
 export const getAll = async (request: Request, response: Response) => {
-    response.send({ success: 'success' });
+    response.send('Abey saaley');
 };
 
 export const bookRide = async (request: Request, response: Response) => {
-    response.send({ success: 'success' });
+    response.json({ success: 'success' });
 };
 
 export const cancelRide = async (request: Request, response: Response) => {
-    response.send({ success: 'success' });
+    response.json({ success: 'success' });
 };
 
 export const acceptRide = async (request: Request, response: Response) => {
-    response.send({ success: 'success' });
+    response.json({ success: 'success' });
 };
 
 export const startRide = async (request: Request, response: Response) => {
-    response.send({ success: 'success' });
+    response.json({ success: 'success' });
 };
 
 /*

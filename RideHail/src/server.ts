@@ -6,19 +6,28 @@ import dotenv from 'dotenv';
 import App from './app';
 
 dotenv.config();
-const port = process.env.PORT || '8080';
+const port = process.env.NODE_PORT || '8080';
 const app = new App(+port); //or parseInt(port);
 
 import { typeOrmConfig } from './config';
 
 (async () => {
-  const conn = await createConnection(typeOrmConfig);
-  console.log('PG connected.');
+  try {
+    console.error(typeOrmConfig);
+    const conn = await createConnection(typeOrmConfig);
+    console.log('PG connected.');
+    
+    app.listen();
   
-  app.listen();
-
-  await conn.close();
-  console.log('PG connection closed.');
+    process.on('exit', async () => {
+      await conn.close();
+      console.log('PG connection closed.');
+    });
+  
+  }
+  catch(ex) {
+    console.error(ex);
+  }
 })();
 
       /*

@@ -10,5 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAll = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    response.send({ success: 'success' });
+    response.send('Abey saaley');
 });
+exports.bookRide = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    response.json({ success: 'success' });
+});
+exports.cancelRide = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    response.json({ success: 'success' });
+});
+exports.acceptRide = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    response.json({ success: 'success' });
+});
+exports.startRide = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    response.json({ success: 'success' });
+});
+/*
+Push notifications:
+- find and notify Nearby Drivers
+- cancel ride to other entity
+- notify consumer that ride has been accepted
+
+HOW NOTIFY USERS FOR CHANGING STATE AND LOCATION?
+*/ 
