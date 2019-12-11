@@ -1,35 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
+import { User } from './user';
+import { ConsumerState } from '../enums/ConsumerState';
+import { Ride } from './ride';
 
 @Entity('Consumers')
-export class Consumers {
+export class Consumers extends User {
 
-    @PrimaryGeneratedColumn()
-    public id: number;
+    @Column({ type: 'enum', enum: ConsumerState, default: ConsumerState.IDLE })
+    public state: ConsumerState = ConsumerState.IDLE;
 
-    @Column({ type: 'character varying' })
-    public firstName: string;
-
-    @Column({ type: 'character varying' })
-    public lastName: string;
-
-    @Column({ type: 'datetime' })
-    public joinDate: Date;
-
-    @Column({ type: 'character varying' })
-    public email: string;
-
-    @Column({ type: 'character varying' })
-    public password: string;
-
-    @Column({ type: 'character varying' })
-    public mobile: string;
-
-    @Column({ type: 'character varying' })
-    public profileImageURL: string;
-
-    @Column({ type: 'character varying' })
-    public pushToken: string;
-
-    @Column({ type: 'character varying' })
-    public state: string;
+    @OneToMany(type => Ride, ride => ride.consumer)
+    public rides: Ride[] = []
 }
