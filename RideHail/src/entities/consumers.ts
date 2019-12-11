@@ -3,12 +3,12 @@ import { User } from './user';
 import { ConsumerState } from '../enums/ConsumerState';
 import { Ride } from './ride';
 
-@Entity('Consumers')
+@Entity()
 export class Consumers extends User {
 
     @Column({ type: 'enum', enum: ConsumerState, default: ConsumerState.IDLE })
     public state: ConsumerState = ConsumerState.IDLE;
 
     @OneToMany(type => Ride, ride => ride.consumer)
-    public rides: Ride[] = []
+    public rides: Ride[] = [];
 }

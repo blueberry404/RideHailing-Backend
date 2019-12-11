@@ -1,9 +1,9 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import { User } from './user';
-import { DriverState } from '../enums/DRIVERState';
+import { DriverState } from '../enums/DriverState';
 import { Ride } from './ride';
 
-@Entity('Drivers')
+@Entity()
 export class Drivers extends User {
 
     @Column({ type: 'enum', enum: DriverState, default: DriverState.NOT_AVAILABLE })

@@ -3,7 +3,7 @@ import { UserLocations } from "./userLocations";
 import { Consumers } from "./consumers";
 import { Drivers } from "./drivers";
 
-@Entity('Ride')
+@Entity()
 export class Ride {
     
     @PrimaryGeneratedColumn()
@@ -11,6 +11,12 @@ export class Ride {
 
     @Column({ type: 'datetime' })
     public bookingDate!: Date
+
+    @Column({ type: 'datetime' })
+    public startRideTime!: Date
+
+    @Column({ type: 'datetime' })
+    public endRideTime!: Date
 
     @Column({ type: 'double' })
     public distance: number = 0

@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { Ride } from "./ride";
 
-@Entity('UserLocations')
+@Entity()
 export class UserLocations {
 
     @PrimaryGeneratedColumn()

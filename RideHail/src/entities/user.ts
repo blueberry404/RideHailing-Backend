@@ -18,7 +18,7 @@ export class User {
     public email!: string;
 
     @Column({ type: 'character varying' })
-    public password!: string;
+    public passwordHash!: string;
 
     @Column({ type: 'character varying' })
     public mobile!: string;

@@ -9,11 +9,18 @@ const typeOrmConfig: PostgresConnectionOptions = {
     username: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
     database: POSTGRES_DB,
-    synchronize: true,
+    synchronize: false,
+    migrationsRun: true,
     logging: true,
     entities: [
-        
-    ]
+        `${__dirname}/entities/*.js`
+    ],
+    migrations: [
+        'migrations/*.js'
+    ],
+    cli: {
+        migrationsDir: 'migrations'
+    }
 };
 
 export { typeOrmConfig };
