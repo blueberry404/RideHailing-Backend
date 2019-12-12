@@ -11,7 +11,7 @@ export class User {
     @Column({ type: 'character varying' })
     public lastName!: string;
 
-    @Column({ type: 'datetime' })
+    @Column({ type: 'timestamptz' })
     public joinDate!: Date;
 
     @Column({ type: 'character varying' })

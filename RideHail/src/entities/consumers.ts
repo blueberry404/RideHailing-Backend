@@ -10,5 +10,5 @@ export class Consumers extends User {
     public state: ConsumerState = ConsumerState.IDLE;
 
     @OneToMany(type => Ride, ride => ride.consumer)
-    public rides: Ride[] = [];
+    public rides!: Ride[];
 }

@@ -32,7 +32,7 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
                 },
                 {
                     name: 'joinDate',
-                    type: 'datetime'
+                    type: 'timestamptz'
                 },
                 {
                     name: 'email',
@@ -82,23 +82,23 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
                 },
                 {
                     name: 'bookingDate',
-                    type: 'datetime'
+                    type: 'timestamptz'
                 },
                 {
                     name: 'startRideTime',
-                    type: 'datetime'
+                    type: 'timestamptz'
                 },
                 {
                     name: 'endRideTime',
-                    type: 'datetime'
+                    type: 'timestamptz'
                 },
                 {
                     name: 'distance',
-                    type: 'double'
+                    type: 'float8'
                 },
                 {
                     name: 'amountCharged',
-                    type: 'double'
+                    type: 'float8'
                 }
             ]
         });
@@ -116,8 +116,8 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
                     isNullable: false,
                 },
                 {
-                    name: 'timestamp',
-                    type: 'datetime'
+                    name: 'logTime',
+                    type: 'timestamptz'
                 },
                 {
                     name: 'location',

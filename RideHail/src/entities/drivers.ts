@@ -10,5 +10,5 @@ export class Drivers extends User {
     public state: DriverState = DriverState.NOT_AVAILABLE;
 
     @OneToMany(type => Ride, ride => ride.driver)
-    public rides: Ride[] = []
+    public rides!: Ride[]
 }

@@ -7,8 +7,8 @@ export class UserLocations {
     @PrimaryGeneratedColumn()
     public id!: number
 
-    @Column({ type: 'datetime' })
-    public timestamp!: Date
+    @Column()
+    public logTime!: Date
 
     @Column('simple-json')
     public location!: { latitude: number, longitude: number }

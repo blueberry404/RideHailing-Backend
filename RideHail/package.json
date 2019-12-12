@@ -4,7 +4,7 @@
   "description": "Backend for ride hail type application - A practice",
   "main": "index.js",
   "scripts": {
-    "tsc" : "tsc",
+    "tsc": "tsc",
     "start": "tsc && node build/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "migrate:create": "./node_modules/.bin/typeorm migration:create -n",
@@ -22,7 +22,7 @@
     "pg": "^7.14.0",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.5.4",
-    "typeorm": "^0.2.20",
+    "typeorm": "0.2.21",
     "typescript": "^3.7.2"
   },
   "devDependencies": {

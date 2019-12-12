@@ -9,23 +9,23 @@ export class Ride {
     @PrimaryGeneratedColumn()
     public rideID!: number
 
-    @Column({ type: 'datetime' })
+    @Column()
     public bookingDate!: Date
 
-    @Column({ type: 'datetime' })
+    @Column()
     public startRideTime!: Date
 
-    @Column({ type: 'datetime' })
+    @Column()
     public endRideTime!: Date
 
-    @Column({ type: 'double' })
+    @Column()
     public distance: number = 0
 
-    @Column({ type: 'double' })
+    @Column()
     public amountCharged : number = 0
 
     @OneToMany(type => UserLocations, location => location.ride)
-    public locations: UserLocations[] = []
+    public locations!: UserLocations[]
 
     @ManyToOne(type => Consumers, consumer => consumer.rides)
     public consumer!: Consumers
