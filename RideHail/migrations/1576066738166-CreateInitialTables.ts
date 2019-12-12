@@ -128,6 +128,10 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.dropTable('consumers');
+        await queryRunner.dropTable('drivers');
+        await queryRunner.dropTable('ride');
+        await queryRunner.dropTable('userlocations');
     }
 
 }
