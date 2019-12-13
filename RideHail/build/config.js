@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, NODE_HOST, POSTGRES_HOST } = process.env;
+const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST } = process.env;
 const typeOrmConfig = {
     type: "postgres",
     host: POSTGRES_HOST,
@@ -8,8 +8,17 @@ const typeOrmConfig = {
     username: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
     database: POSTGRES_DB,
-    synchronize: true,
+    synchronize: false,
+    migrationsRun: true,
     logging: true,
-    entities: []
+    entities: [
+        'build/entities/**/*.js'
+    ],
+    migrations: [
+        'build/migrations/**/*.js'
+    ],
+    cli: {
+        migrationsDir: 'build/migrations'
+    }
 };
 exports.typeOrmConfig = typeOrmConfig;
