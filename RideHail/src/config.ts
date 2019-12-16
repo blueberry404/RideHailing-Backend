@@ -16,7 +16,7 @@ const typeOrmConfig: PostgresConnectionOptions = {
         'build/entities/**/*.js'
     ],
     migrations: [
-        'build/migrations/**/*.js'
+        'src/migrations/**/*.js'
     ],
     cli: {
         migrationsDir: 'build/migrations'
