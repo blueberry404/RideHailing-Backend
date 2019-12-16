@@ -1,6 +1,6 @@
 export enum ConsumerState {
-    IDLE = 0,
-    FINDING_RIDE = 1,
-    WAIT_FOR_RIDE = 2,
-    IN_RIDE = 3
+    IDLE = "IDLE",
+    FINDING_RIDE = "FINDING_RIDE",
+    WAIT_FOR_RIDE = "WAIT_FOR_RIDE",
+    IN_RIDE = "IN_RIDE"
 }

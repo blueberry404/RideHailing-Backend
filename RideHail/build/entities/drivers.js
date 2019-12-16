@@ -14,14 +14,10 @@ const user_1 = require("./user");
 const DriverState_1 = require("../enums/DriverState");
 const ride_1 = require("./ride");
 let Drivers = class Drivers extends user_1.User {
-    constructor() {
-        super(...arguments);
-        this.state = DriverState_1.DriverState.NOT_AVAILABLE;
-    }
 };
 __decorate([
-    typeorm_1.Column({ type: 'enum', enum: DriverState_1.DriverState, default: DriverState_1.DriverState.NOT_AVAILABLE }),
-    __metadata("design:type", Number)
+    typeorm_1.Column({ type: 'enum', enum: DriverState_1.DriverState }),
+    __metadata("design:type", String)
 ], Drivers.prototype, "state", void 0);
 __decorate([
     typeorm_1.OneToMany(type => ride_1.Ride, ride => ride.driver),

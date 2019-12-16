@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var ConsumerState;
 (function (ConsumerState) {
-    ConsumerState[ConsumerState["IDLE"] = 0] = "IDLE";
-    ConsumerState[ConsumerState["FINDING_RIDE"] = 1] = "FINDING_RIDE";
-    ConsumerState[ConsumerState["WAIT_FOR_RIDE"] = 2] = "WAIT_FOR_RIDE";
-    ConsumerState[ConsumerState["IN_RIDE"] = 3] = "IN_RIDE";
+    ConsumerState["IDLE"] = "IDLE";
+    ConsumerState["FINDING_RIDE"] = "FINDING_RIDE";
+    ConsumerState["WAIT_FOR_RIDE"] = "WAIT_FOR_RIDE";
+    ConsumerState["IN_RIDE"] = "IN_RIDE";
 })(ConsumerState = exports.ConsumerState || (exports.ConsumerState = {}));

@@ -13,13 +13,21 @@ const typeorm_1 = require("typeorm");
 class CreateInitialTables1576066738166 {
     up(queryRunner) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield queryRunner.createTable(this.createUserTable('consumers'), true);
-            yield queryRunner.createTable(this.createUserTable('drivers'), true);
+            yield queryRunner.createTable(this.createUserTable('consumers', {
+                name: 'state',
+                type: 'enum',
+                enum: ['IDLE', 'FINDING_RIDE', 'WAIT_FOR_RIDE', 'IN_RIDE']
+            }), true);
+            yield queryRunner.createTable(this.createUserTable('drivers', {
+                name: 'state',
+                type: 'enum',
+                enum: ['NOT_AVAILABLE', 'IDLE', 'BUSY']
+            }), true);
             yield queryRunner.createTable(this.createRideTable(), true);
             yield queryRunner.createTable(this.createUserLocationsTable(), true);
         });
     }
-    createUserTable(tablename) {
+    createUserTable(tablename, enumOption) {
         return new typeorm_1.Table({
             name: tablename,
             columns: [
@@ -71,10 +79,7 @@ class CreateInitialTables1576066738166 {
                     type: 'character varying',
                     length: '300',
                 },
-                {
-                    name: 'state',
-                    type: 'enum'
-                }
+                enumOption,
             ]
         });
     }
@@ -129,7 +134,7 @@ class CreateInitialTables1576066738166 {
                 },
                 {
                     name: 'location',
-                    type: 'simple-json'
+                    type: 'json'
                 }
             ]
         });

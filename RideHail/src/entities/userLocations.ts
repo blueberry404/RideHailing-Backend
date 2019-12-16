@@ -10,7 +10,7 @@ export class UserLocations {
     @Column()
     public logTime!: Date
 
-    @Column('simple-json')
+    @Column('json')
     public location!: { latitude: number, longitude: number }
 
     @ManyToOne(type => Ride, ride => ride.locations)

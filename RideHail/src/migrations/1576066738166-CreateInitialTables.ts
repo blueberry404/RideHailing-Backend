@@ -1,15 +1,28 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
+import { ConsumerState } from '../enums/ConsumerState';
+import { DriverState } from '../enums/DriverState';
+import { TableColumnOptions } from "typeorm/schema-builder/options/TableColumnOptions";
 
 export class CreateInitialTables1576066738166 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.createTable(this.createUserTable('consumers'), true);
-        await queryRunner.createTable(this.createUserTable('drivers'), true);
+        await queryRunner.createTable(this.createUserTable('consumers', 
+        {
+            name: 'state',
+            type: 'enum',
+            enum: ['IDLE', 'FINDING_RIDE', 'WAIT_FOR_RIDE', 'IN_RIDE']
+        }), true);
+        await queryRunner.createTable(this.createUserTable('drivers',
+        {
+            name: 'state',
+            type: 'enum',
+            enum: ['NOT_AVAILABLE', 'IDLE', 'BUSY']
+        }), true);
         await queryRunner.createTable(this.createRideTable(), true);
         await queryRunner.createTable(this.createUserLocationsTable(), true);
     }
 
-    private createUserTable(tablename: string): Table {
+    private createUserTable(tablename: string, enumOption: TableColumnOptions): Table {
         return new Table({
             name: tablename,
             columns: [
@@ -61,10 +74,7 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
                     type: 'character varying',
                     length: '300',
                 },
-                {
-                    name: 'state',
-                    type: 'enum'
-                }
+                enumOption,
             ]
         });
     }
@@ -121,7 +131,7 @@ export class CreateInitialTables1576066738166 implements MigrationInterface {
                 },
                 {
                     name: 'location',
-                    type: 'simple-json'
+                    type: 'json'
                 }
             ]
         });

@@ -6,8 +6,8 @@ import { Ride } from './ride';
 @Entity()
 export class Consumers extends User {
 
-    @Column({ type: 'enum', enum: ConsumerState, default: ConsumerState.IDLE })
-    public state: ConsumerState = ConsumerState.IDLE;
+    @Column({ type: 'enum', enum: ConsumerState })
+    public state!: ConsumerState;
 
     @OneToMany(type => Ride, ride => ride.consumer)
     public rides!: Ride[];

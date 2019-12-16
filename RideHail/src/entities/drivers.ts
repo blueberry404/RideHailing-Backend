@@ -6,8 +6,8 @@ import { Ride } from './ride';
 @Entity()
 export class Drivers extends User {
 
-    @Column({ type: 'enum', enum: DriverState, default: DriverState.NOT_AVAILABLE })
-    public state: DriverState = DriverState.NOT_AVAILABLE;
+    @Column({ type: 'enum', enum: DriverState })
+    public state!: DriverState;
 
     @OneToMany(type => Ride, ride => ride.driver)
     public rides!: Ride[]

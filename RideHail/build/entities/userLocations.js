@@ -22,7 +22,7 @@ __decorate([
     __metadata("design:type", Date)
 ], UserLocations.prototype, "logTime", void 0);
 __decorate([
-    typeorm_1.Column('simple-json'),
+    typeorm_1.Column('json'),
     __metadata("design:type", Object)
 ], UserLocations.prototype, "location", void 0);
 __decorate([

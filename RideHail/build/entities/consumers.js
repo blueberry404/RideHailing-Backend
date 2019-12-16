@@ -14,14 +14,10 @@ const user_1 = require("./user");
 const ConsumerState_1 = require("../enums/ConsumerState");
 const ride_1 = require("./ride");
 let Consumers = class Consumers extends user_1.User {
-    constructor() {
-        super(...arguments);
-        this.state = ConsumerState_1.ConsumerState.IDLE;
-    }
 };
 __decorate([
-    typeorm_1.Column({ type: 'enum', enum: ConsumerState_1.ConsumerState, default: ConsumerState_1.ConsumerState.IDLE }),
-    __metadata("design:type", Number)
+    typeorm_1.Column({ type: 'enum', enum: ConsumerState_1.ConsumerState }),
+    __metadata("design:type", String)
 ], Consumers.prototype, "state", void 0);
 __decorate([
     typeorm_1.OneToMany(type => ride_1.Ride, ride => ride.consumer),
