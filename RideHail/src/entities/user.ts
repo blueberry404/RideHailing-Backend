@@ -1,6 +1,15 @@
 import { PrimaryGeneratedColumn, Column } from 'typeorm';
+import { IUser } from '../interfaces/user';
 
 export class User {
+
+    constructor(user: IUser) {
+        this.firstName = user.firstname;
+        this.lastName = user.lastname;
+        this.email = user.email;
+        this.mobile = user.mobile;
+        this.joinDate = new Date();
+    }
 
     @PrimaryGeneratedColumn()
     public id!: number;

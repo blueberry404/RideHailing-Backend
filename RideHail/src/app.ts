@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import * as users from './controllers/users';
+import errorMiddleware from './middlewares/error';
 
 class App {
   public app: express.Application;
@@ -13,6 +14,7 @@ class App {
     //Express configuration
     this.initializaMiddleWares();
     this.registerRoutes();
+    this.handleErrors();
   }
 
   private initializaMiddleWares() {
@@ -24,6 +26,10 @@ class App {
   private registerRoutes() {
     this.app.get('/users', users.getAll);
     this.app.get('/users/bookRide', users.bookRide);
+  }
+
+  private handleErrors() {
+    this.app.use(errorMiddleware);
   }
 
   public listen() {

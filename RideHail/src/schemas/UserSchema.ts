@@ -7,4 +7,3 @@ export const CreateUserSchema = Joi.object().keys({
     password: Joi.string().required(),
     mobile: Joi.string().required(),
 });
-
