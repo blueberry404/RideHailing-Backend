@@ -7,7 +7,7 @@ import { IConsumer } from '../interfaces/user';
 @Entity()
 export class Consumers extends User {
 
-    constructor(consumer: IConsumer) {
+    constructor(consumer: IConsumer| undefined = undefined) {
         super(consumer);
         this.state = ConsumerState.IDLE;
     }

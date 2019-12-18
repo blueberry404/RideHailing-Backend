@@ -3,12 +3,14 @@ import { IUser } from '../interfaces/user';
 
 export class User {
 
-    constructor(user: IUser) {
-        this.firstName = user.firstname;
-        this.lastName = user.lastname;
-        this.email = user.email;
-        this.mobile = user.mobile;
-        this.joinDate = new Date();
+    constructor(user: IUser | undefined = undefined) {
+        if(user) {
+            this.firstName = user.firstname;
+            this.lastName = user.lastname;
+            this.email = user.email;
+            this.mobile = user.mobile;
+            this.joinDate = new Date();
+        }
     }
 
     @PrimaryGeneratedColumn()
