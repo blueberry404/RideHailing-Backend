@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as consumerService from '../services/consumer';
+import * as driverService from '../services/drivers';
 import { Consumers } from '../entities/consumers';
+import { Drivers } from '../entities/drivers';
 import HTTPException from '../exceptions/HttpException';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
@@ -9,7 +11,7 @@ export const getAllConsumers = async (_request: Request, response: Response) => 
 };
 
 export const getAllDrivers = async (_request: Request, response: Response) => {
-    const users = await consumerService.getAll();
+    const users = await driverService.getAll();
     response.send({ success: true, result: JSON.stringify(users) });
 };
 
@@ -26,8 +28,8 @@ export const createConsumer = async (request: Request, response: Response, next:
 
 export const createDriver = async (request: Request, response: Response, next: NextFunction) => {
     const driver = request.body;
-    const result: any = await consumerService.saveConsumer(driver);
-    if(result instanceof Consumers) {
+    const result: any = await driverService.saveDriver(driver);
+    if(result instanceof Drivers) {
         response.send({ success: true, result: JSON.stringify(result) });
     }
     else {
