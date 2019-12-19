@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const users = __importStar(require("./controllers/users"));
+const error_1 = __importDefault(require("./middlewares/error"));
 class App {
     constructor(port) {
         this.app = express_1.default();
@@ -20,6 +21,7 @@ class App {
         //Express configuration
         this.initializaMiddleWares();
         this.registerRoutes();
+        this.handleErrors();
     }
     initializaMiddleWares() {
         this.app.set("port", this.port);
@@ -29,6 +31,9 @@ class App {
     registerRoutes() {
         this.app.get('/users', users.getAll);
         this.app.get('/users/bookRide', users.bookRide);
+    }
+    handleErrors() {
+        this.app.use(error_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

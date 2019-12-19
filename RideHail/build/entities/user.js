@@ -11,6 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 class User {
+    constructor(user = undefined) {
+        if (user) {
+            this.firstName = user.firstname;
+            this.lastName = user.lastname;
+            this.email = user.email;
+            this.mobile = user.mobile;
+            this.joinDate = new Date();
+        }
+    }
 }
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),

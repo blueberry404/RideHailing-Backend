@@ -14,6 +14,10 @@ const user_1 = require("./user");
 const ConsumerState_1 = require("../enums/ConsumerState");
 const ride_1 = require("./ride");
 let Consumers = class Consumers extends user_1.User {
+    constructor(consumer = undefined) {
+        super(consumer);
+        this.state = ConsumerState_1.ConsumerState.IDLE;
+    }
 };
 __decorate([
     typeorm_1.Column({ type: 'enum', enum: ConsumerState_1.ConsumerState }),
@@ -24,6 +28,7 @@ __decorate([
     __metadata("design:type", Array)
 ], Consumers.prototype, "rides", void 0);
 Consumers = __decorate([
-    typeorm_1.Entity()
+    typeorm_1.Entity(),
+    __metadata("design:paramtypes", [Object])
 ], Consumers);
 exports.Consumers = Consumers;

@@ -9,7 +9,8 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
     "migrate:create": "./node_modules/.bin/typeorm migration:create -n",
     "migrate:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
-    "migrate:run": "ts-node ./node_modules/.bin/typeorm migration:run"
+    "migrate:run": "ts-node ./node_modules/.bin/typeorm migration:run",
+    "seed": "node build/tasks/dbseed.js"
   },
   "author": "Anum Amin",
   "license": "ISC",
@@ -25,6 +26,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "p-iteration": "^1.1.8",
     "pg": "^7.14.0",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.5.4",
