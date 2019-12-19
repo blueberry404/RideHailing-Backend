@@ -22,13 +22,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const consumerService = __importStar(require("../services/consumer"));
 const consumers_1 = require("../entities/consumers");
 const HttpException_1 = __importDefault(require("../exceptions/HttpException"));
-exports.getAll = (_request, response) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllConsumers = (_request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield consumerService.getAll();
     response.send({ success: true, result: JSON.stringify(users) });
 });
-exports.createUser = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllDrivers = (_request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield consumerService.getAll();
+    response.send({ success: true, result: JSON.stringify(users) });
+});
+exports.createConsumer = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const consumer = request.body;
     const result = yield consumerService.saveConsumer(consumer);
+    if (result instanceof consumers_1.Consumers) {
+        response.send({ success: true, result: JSON.stringify(result) });
+    }
+    else {
+        next(new HttpException_1.default(400, result));
+    }
+});
+exports.createDriver = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const driver = request.body;
+    const result = yield consumerService.saveConsumer(driver);
     if (result instanceof consumers_1.Consumers) {
         response.send({ success: true, result: JSON.stringify(result) });
     }

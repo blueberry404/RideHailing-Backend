@@ -8,6 +8,6 @@ exports.CreateUserSchema = joi_1.default.object().keys({
     firstname: joi_1.default.string().required(),
     lastname: joi_1.default.string().required(),
     email: joi_1.default.string().email().required(),
-    password: joi_1.default.string().required(),
-    mobile: joi_1.default.string().required(),
+    password: joi_1.default.string().required().min(6),
+    mobile: joi_1.default.string().required().min(10),
 });

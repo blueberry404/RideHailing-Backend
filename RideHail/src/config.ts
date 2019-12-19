@@ -13,13 +13,13 @@ const typeOrmConfig: PostgresConnectionOptions = {
     migrationsRun: true,
     logging: true,
     entities: [
-        'build/entities/**/*.js'
+        'build/entities/*.js'
     ],
     migrations: [
-        'src/migrations/**/*.js'
+        'build/migrations/*.js'
     ],
     cli: {
-        migrationsDir: 'build/migrations'
+        migrationsDir: 'src/migrations'
     }
 };
 

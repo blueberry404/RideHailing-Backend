@@ -24,7 +24,10 @@ class App {
   }
 
   private registerRoutes() {
-    this.app.get('/users', users.getAll);
+    this.app.get('/users/consumers', users.getAllConsumers);
+    this.app.get('/users/drivers', users.getAllDrivers);
+    this.app.post('/users/consumer/create', users.createConsumer);
+    this.app.post('/users/driver/create', users.createDriver);
     this.app.get('/users/bookRide', users.bookRide);
   }
 

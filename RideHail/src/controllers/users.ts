@@ -3,14 +3,30 @@ import * as consumerService from '../services/consumer';
 import { Consumers } from '../entities/consumers';
 import HTTPException from '../exceptions/HttpException';
 
-export const getAll = async (_request: Request, response: Response) => {
+export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
     response.send({ success: true, result: JSON.stringify(users) });
 };
 
-export const createUser = async (request: Request, response: Response, next: NextFunction) => {
+export const getAllDrivers = async (_request: Request, response: Response) => {
+    const users = await consumerService.getAll();
+    response.send({ success: true, result: JSON.stringify(users) });
+};
+
+export const createConsumer = async (request: Request, response: Response, next: NextFunction) => {
     const consumer = request.body;
     const result: any = await consumerService.saveConsumer(consumer);
+    if(result instanceof Consumers) {
+        response.send({ success: true, result: JSON.stringify(result) });
+    }
+    else {
+        next(new HTTPException(400, result));
+    }
+};
+
+export const createDriver = async (request: Request, response: Response, next: NextFunction) => {
+    const driver = request.body;
+    const result: any = await consumerService.saveConsumer(driver);
     if(result instanceof Consumers) {
         response.send({ success: true, result: JSON.stringify(result) });
     }

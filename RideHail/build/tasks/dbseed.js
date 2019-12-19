@@ -32,7 +32,7 @@ const consumer_1 = require("../repositories/consumer");
     const createUser = (isConsumer) => __awaiter(void 0, void 0, void 0, function* () {
         const firstname = faker.name.firstName();
         const lastname = faker.name.lastName();
-        const email = faker.internet.exampleEmail(firstname, lastname);
+        const email = faker.internet.email(firstname, lastname, 'gmail');
         const mobile = faker.phone.phoneNumberFormat(0);
         const password = faker.internet.password(8);
         console.log({ firstname, lastname, email, mobile, password });
