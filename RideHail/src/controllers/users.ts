@@ -18,7 +18,6 @@ export const getAllDrivers = async (_request: Request, response: Response) => {
 export const createConsumer = async (request: Request, response: Response, next: NextFunction) => {
     const consumer = request.body;
     const result: any = await consumerService.saveConsumer(consumer);
-    console.log(`type of consumer result.....  ${typeof(result)}`);
     if(result instanceof Consumers) {
         response.send({ success: true, result });
     }
@@ -30,9 +29,19 @@ export const createConsumer = async (request: Request, response: Response, next:
 export const createDriver = async (request: Request, response: Response, next: NextFunction) => {
     const driver = request.body;
     const result: any = await driverService.saveDriver(driver);
-    console.log(`type of driver result.....  ${typeof(result)}`);
     if(result instanceof Drivers) {
         response.send({ success: true, result: result });
+    }
+    else {
+        next(new HTTPException(400, result));
+    }
+};
+
+export const changeDriverStatus = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.body;
+    const result: any = await driverService.changeDriverStatus(req);
+    if(result instanceof Drivers) {
+        response.send({ success: true, message: 'Status has been updated' });
     }
     else {
         next(new HTTPException(400, result));

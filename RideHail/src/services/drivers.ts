@@ -1,8 +1,7 @@
-import Joi from '@hapi/joi';
-
 import * as repo from '../repositories/driver';
 import { IDriver } from '../interfaces/user';
-import { validateSignUp } from '../validations/user';
+import { IDriverStatusChangeRequest } from '../interfaces/driverRequest';
+import { validateSignUp, validateDriverStatusChange } from '../validations/user';
 import { Drivers } from '../entities/drivers';
 import Auth from '../utils/Auth';
 
@@ -32,8 +31,19 @@ export const saveDriver = async (driverReq: IDriver) => {
             }
         }
     }
+};
 
-    //TODO: work on validations and seeding
-    //https://github.com/mattwelke/example-typeorm-postgres
-   //https://dev.to/jacqueline/using-hapi-joi-version-16-1-7-to-validate-a-request-body-in-a-restful-api-bje
+export const changeDriverStatus = async (req: IDriverStatusChangeRequest) => {
+    const error = validateDriverStatusChange(req);
+    if(error) {
+        return error;
+    }
+    else {
+        try {
+            const saved = await repo.updateDriverStatus(req);
+            return saved;
+        } catch (error) {
+            return error;
+        }
+    }
 };
