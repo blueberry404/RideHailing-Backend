@@ -1,7 +1,7 @@
 import { IUser } from '../interfaces/user';
-import { IDriverStatusChangeRequest } from '../interfaces/driverRequest';
+import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces/driverRequest';
 import { CreateUserSchema } from '../schemas/UserSchema';
-import { DriverStatusUpdateSchema } from '../schemas/DriverSchema';
+import { DriverStatusUpdateSchema, DriverLocationUpdateSchema } from '../schemas/DriverSchema';
 
 export const validateSignUp = (user: IUser) => {
     const { error } = CreateUserSchema.validate(user);
@@ -10,5 +10,10 @@ export const validateSignUp = (user: IUser) => {
 
 export const validateDriverStatusChange = (req: IDriverStatusChangeRequest) => {
     const { error } = DriverStatusUpdateSchema.validate(req);
+    return error ? error : null;
+};
+
+export const validateDriverLocationUpdate = (req: IDriverLocationUpdate) => {
+    const { error } = DriverLocationUpdateSchema.validate(req);
     return error ? error : null;
 };

@@ -29,6 +29,7 @@ class App {
     this.app.post('/users/consumer/create', users.createConsumer);
     this.app.post('/users/driver/create', users.createDriver);
     this.app.post('/users/driver/updateStatus', users.changeDriverStatus);
+    this.app.post('/users/driver/updateLocation', users.updateDriverLocation);
     this.app.get('/users/bookRide', users.bookRide);
   }
 

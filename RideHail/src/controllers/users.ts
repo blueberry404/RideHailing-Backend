@@ -48,6 +48,17 @@ export const changeDriverStatus = async (request: Request, response: Response, n
     }
 };
 
+export const updateDriverLocation = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.body;
+    const result: any = await driverService.updateDriverLocation(req);
+    if(result instanceof Drivers) {
+        response.send({ success: true, message: 'Status has been updated' });
+    }
+    else {
+        next(new HTTPException(400, result));
+    }
+};
+
 export const bookRide = async (request: Request, response: Response) => {
     response.json({ success: 'success' });
 };

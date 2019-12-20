@@ -15,6 +15,9 @@ export class Drivers extends User {
     @Column({ type: 'enum', enum: DriverState })
     public state!: DriverState;
 
+    @Column('json')
+    public location!: { latitude: number, longitude: number }
+
     @OneToMany(type => Ride, ride => ride.driver)
     public rides!: Ride[]
 }

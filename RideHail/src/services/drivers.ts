@@ -1,7 +1,7 @@
 import * as repo from '../repositories/driver';
 import { IDriver } from '../interfaces/user';
-import { IDriverStatusChangeRequest } from '../interfaces/driverRequest';
-import { validateSignUp, validateDriverStatusChange } from '../validations/user';
+import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces/driverRequest';
+import { validateSignUp, validateDriverStatusChange, validateDriverLocationUpdate } from '../validations/user';
 import { Drivers } from '../entities/drivers';
 import Auth from '../utils/Auth';
 
@@ -41,6 +41,27 @@ export const changeDriverStatus = async (req: IDriverStatusChangeRequest) => {
     else {
         try {
             const saved = await repo.updateDriverStatus(req);
+            return saved;
+        } catch (error) {
+            return error;
+        }
+    }
+};
+
+export const updateDriverLocation = async (req: IDriverLocationUpdate) => {
+    const error = validateDriverLocationUpdate(req);
+    if(error) {
+        return error;
+    }
+    // else if(!req.hasOwnProperty('location')) { //just for manual temporary check
+    //     return "Parameter location is missing";
+    // }
+    // else if(!req.location.hasOwnProperty('latitude') || req.location.hasOwnProperty('longitude')) {
+    //     return "Parameter latitude/longitude missing";
+    // }
+    else {
+        try {
+            const saved = await repo.updateDriverLocation(req);
             return saved;
         } catch (error) {
             return error;
