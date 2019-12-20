@@ -24,7 +24,12 @@ export const saveDriver = async (driverReq: IDriver) => {
         }
         else {
             driver.passwordHash = hash;
-            repo.save(driver);
+            try {
+                const saved = await repo.save(driver)
+                return saved;
+            } catch (error) {
+                return error;
+            }
         }
     }
 

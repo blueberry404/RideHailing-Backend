@@ -24,7 +24,12 @@ export const saveConsumer = async (consumerReq: IConsumer) => {
         }
         else {
             consumer.passwordHash = hash;
-            repo.save(consumer);
+            try {
+                const saved = await repo.save(consumer)
+                return saved;
+            } catch (error) {
+                return error;
+            }
         }
     }
 

@@ -7,19 +7,20 @@ import HTTPException from '../exceptions/HttpException';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
-    response.send({ success: true, result: JSON.stringify(users) });
+    response.send({ success: true, result: users });
 };
 
 export const getAllDrivers = async (_request: Request, response: Response) => {
     const users = await driverService.getAll();
-    response.send({ success: true, result: JSON.stringify(users) });
+    response.send({ success: true, result: users });
 };
 
 export const createConsumer = async (request: Request, response: Response, next: NextFunction) => {
     const consumer = request.body;
     const result: any = await consumerService.saveConsumer(consumer);
+    console.log(`type of consumer result.....  ${typeof(result)}`);
     if(result instanceof Consumers) {
-        response.send({ success: true, result: JSON.stringify(result) });
+        response.send({ success: true, result });
     }
     else {
         next(new HTTPException(400, result));
@@ -29,8 +30,9 @@ export const createConsumer = async (request: Request, response: Response, next:
 export const createDriver = async (request: Request, response: Response, next: NextFunction) => {
     const driver = request.body;
     const result: any = await driverService.saveDriver(driver);
+    console.log(`type of driver result.....  ${typeof(result)}`);
     if(result instanceof Drivers) {
-        response.send({ success: true, result: JSON.stringify(result) });
+        response.send({ success: true, result: result });
     }
     else {
         next(new HTTPException(400, result));
