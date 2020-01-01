@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Drivers } from '../entities/drivers';
 import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces/driverRequest';
+import { IBookingRequest } from '../interfaces/bookingRequest';
 
 export const getAll = async () => {
     return getRepository(Drivers).find();
@@ -67,4 +68,8 @@ export const updateDriverLocation = async (driverReq: IDriverLocationUpdate) => 
     } catch (error) {
         return error;
     }
+};
+
+export const findNearestDriver = async (req: IBookingRequest) => {
+    
 };

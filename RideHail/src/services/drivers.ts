@@ -4,6 +4,7 @@ import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces
 import { validateSignUp, validateDriverStatusChange, validateDriverLocationUpdate } from '../validations/user';
 import { Drivers } from '../entities/drivers';
 import Auth from '../utils/Auth';
+import { IBookingRequest } from '../interfaces/bookingRequest';
 
 export const getAll = async () => {
     return repo.getAll();
@@ -66,5 +67,14 @@ export const updateDriverLocation = async (req: IDriverLocationUpdate) => {
         } catch (error) {
             return error;
         }
+    }
+};
+
+export const findNearestDriver = async (req: IBookingRequest) => {
+    try {
+        const saved = await repo.findNearestDriver(req);
+        return saved;
+    } catch (error) {
+        return error;
     }
 };

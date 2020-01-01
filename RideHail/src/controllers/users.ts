@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import * as consumerService from '../services/consumer';
 import * as driverService from '../services/drivers';
+import * as rideService from '../services/ride';
 import { Consumers } from '../entities/consumers';
 import { Drivers } from '../entities/drivers';
 import HTTPException from '../exceptions/HttpException';
+import { Ride } from '../entities/ride';
+import { queues, FIND_NEARBY_DRIVER_URL } from '../tasks/queues';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
@@ -59,7 +62,18 @@ export const updateDriverLocation = async (request: Request, response: Response,
     }
 };
 
-export const bookRide = async (request: Request, response: Response) => {
+export const bookRide = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.body;
+    const booking: any = await rideService.bookRide(req);
+    if(booking instanceof Ride) {
+        queues[FIND_NEARBY_DRIVER_URL].add({
+            booking,
+        });
+        response.send({ success: true, result: booking });
+    }
+    else {
+        next(new HTTPException(400, booking));
+    }
     response.json({ success: 'success' });
 };
 

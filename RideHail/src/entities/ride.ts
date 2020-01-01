@@ -2,9 +2,18 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, ManyToOne 
 import { UserLocations } from "./userLocations";
 import { Consumers } from "./consumers";
 import { Drivers } from "./drivers";
+import { IBookingRequest } from "../interfaces/bookingRequest";
 
 @Entity()
 export class Ride {
+
+    constructor(bookingReq: IBookingRequest|undefined = undefined) {
+        if(bookingReq) {
+            this.bookingDate = new Date();
+            this.sourceLocation = { latitude: bookingReq.sourceLat, longitude: bookingReq.sourceLong };
+            this.destLocation = { latitude: bookingReq.destLat, longitude: bookingReq.destLong };
+        }
+    }
     
     @PrimaryGeneratedColumn()
     public rideID!: number
@@ -23,6 +32,15 @@ export class Ride {
 
     @Column()
     public amountCharged : number = 0
+
+    @Column('json')
+    public sourceLocation!: { latitude: number, longitude: number }
+
+    @Column('json')
+    public destLocation!: { latitude: number, longitude: number }
+
+    @Column()
+    public isCancelled: Boolean = false
 
     @OneToMany(type => UserLocations, location => location.ride)
     public locations!: UserLocations[]
