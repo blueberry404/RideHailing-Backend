@@ -1,7 +1,8 @@
 import { getRepository } from 'typeorm';
 import { Drivers } from '../entities/drivers';
 import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces/driverRequest';
-import { IBookingRequest } from '../interfaces/bookingRequest';
+import { Ride } from '../entities/ride';
+import { DriverState } from '../enums/DriverState';
 
 export const getAll = async () => {
     return getRepository(Drivers).find();
@@ -70,6 +71,17 @@ export const updateDriverLocation = async (driverReq: IDriverLocationUpdate) => 
     }
 };
 
-export const findNearestDriver = async (req: IBookingRequest) => {
-    
+export const findNearestDriver = async (ride: Ride) => {
+    //for now, just pick drivers with idle state
+    try {
+        const drivers = await getRepository(Drivers).find({
+            where: {
+                state: DriverState.IDLE
+            },
+        });
+        return drivers;
+    }
+    catch(error) {
+        return error;
+    }
 };

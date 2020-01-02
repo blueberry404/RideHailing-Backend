@@ -69,12 +69,3 @@ export const updateDriverLocation = async (req: IDriverLocationUpdate) => {
         }
     }
 };
-
-export const findNearestDriver = async (req: IBookingRequest) => {
-    try {
-        const saved = await repo.findNearestDriver(req);
-        return saved;
-    } catch (error) {
-        return error;
-    }
-};

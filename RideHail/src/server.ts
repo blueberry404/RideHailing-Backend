@@ -10,7 +10,6 @@ const port = process.env.NODE_PORT || '8080';
 const app = new App(+port); //or parseInt(port);
 
 import { typeOrmConfig } from './config';
-import * as redisClient from './redisClient';
 
 (async () => {
   try {
