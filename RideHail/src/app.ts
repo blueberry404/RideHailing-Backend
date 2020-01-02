@@ -50,7 +50,7 @@ class App {
     this.app.post('/users/driver/create', users.createDriver);
     this.app.post('/users/driver/updateStatus', users.changeDriverStatus);
     this.app.post('/users/driver/updateLocation', users.updateDriverLocation);
-    this.app.get('/users/bookRide', users.bookRide);
+    this.app.post('/users/bookRide', users.bookRide);
   }
 
   private handleErrors() {
