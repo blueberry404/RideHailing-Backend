@@ -1,10 +1,11 @@
 import * as repo from '../repositories/driver';
 import { IDriver } from '../interfaces/user';
-import { IDriverStatusChangeRequest, IDriverLocationUpdate } from '../interfaces/driverRequest';
+import { IDriverLocationUpdate } from '../interfaces/driverRequest';
 import { validateSignUp, validateDriverStatusChange, validateDriverLocationUpdate } from '../validations/user';
 import { Drivers } from '../entities/drivers';
 import Auth from '../utils/Auth';
 import { IBookingRequest } from '../interfaces/bookingRequest';
+import { IDriverStateChange } from '../interfaces/stateChange';
 
 export const getAll = async () => {
     return repo.getAll();
@@ -34,14 +35,14 @@ export const saveDriver = async (driverReq: IDriver) => {
     }
 };
 
-export const changeDriverStatus = async (req: IDriverStatusChangeRequest) => {
+export const changeDriverStatus = async (req: IDriverStateChange) => {
     const error = validateDriverStatusChange(req);
     if(error) {
         return error;
     }
     else {
         try {
-            const saved = await repo.updateDriverStatus(req);
+            const saved = await repo.changeDriverState(req);
             return saved;
         } catch (error) {
             return error;

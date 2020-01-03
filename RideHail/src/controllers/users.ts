@@ -7,6 +7,9 @@ import { Drivers } from '../entities/drivers';
 import HTTPException from '../exceptions/HttpException';
 import { Ride } from '../entities/ride';
 import { queues, FIND_NEARBY_DRIVER_URL } from '../tasks/queues';
+import { IBookingCancelRequest } from '../interfaces/bookingCancelRequest';
+import { ConsumerState } from '../enums/ConsumerState';
+import { DriverState } from '../enums/DriverState';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
@@ -76,8 +79,37 @@ export const bookRide = async (request: Request, response: Response, next: NextF
     }
 };
 
-export const cancelRide = async (request: Request, response: Response) => {
-    response.json({ success: 'success' });
+export const cancelRide = async (request: Request, response: Response, next: NextFunction) => {
+    const req  = request.body as IBookingCancelRequest;
+    const cancelRideObj = await rideService.cancelRide(req);
+    if(cancelRideObj instanceof Ride) {
+        let errorOccured = false;
+        const consumer = await consumerService.changeConsumerState({
+            id: req.consumerId,
+            state: ConsumerState.IDLE
+        });
+        if(!consumer)
+            errorOccured = true;
+
+        if(req.driverId) {
+            const driver = await driverService.changeDriverStatus({
+                id: req.driverId,
+                state: DriverState.IDLE
+            });
+            if(!driver)
+                errorOccured = errorOccured || true;
+        }
+        if(errorOccured) {
+            next(new HTTPException(400, "Booking has been cancelled, but some error occured"));
+        }
+        else {
+            response.send({ success: true, message: 'Booking has been cancelled' });
+        }
+    }
+    else {
+        next(new HTTPException(400, cancelRideObj));
+    }
+    
 };
 
 export const acceptRide = async (request: Request, response: Response) => {

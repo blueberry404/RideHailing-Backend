@@ -5,6 +5,7 @@ import { IConsumer } from '../interfaces/user';
 import { validateSignUp } from '../validations/user';
 import { Consumers } from '../entities/consumers';
 import Auth from '../utils/Auth';
+import { IConsumerStateChange } from '../interfaces/stateChange';
 
 export const getAll = async () => {
     return repo.getAll();
@@ -36,4 +37,8 @@ export const saveConsumer = async (consumerReq: IConsumer) => {
     //TODO: work on validations and seeding
     //https://github.com/mattwelke/example-typeorm-postgres
    //https://dev.to/jacqueline/using-hapi-joi-version-16-1-7-to-validate-a-request-body-in-a-restful-api-bje
+};
+
+export const changeConsumerState = async (req: IConsumerStateChange) => {
+    return repo.changeConsumerState(req);
 };
