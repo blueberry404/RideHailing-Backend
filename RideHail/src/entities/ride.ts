@@ -12,6 +12,7 @@ export class Ride {
             this.bookingDate = new Date();
             this.sourceLocation = { latitude: bookingReq.sourceLat, longitude: bookingReq.sourceLong };
             this.destLocation = { latitude: bookingReq.destLat, longitude: bookingReq.destLong };
+            this.consumerId = bookingReq.userId;
         }
     }
     

@@ -74,7 +74,6 @@ export const bookRide = async (request: Request, response: Response, next: NextF
     else {
         next(new HTTPException(400, booking));
     }
-    response.json({ success: 'success' });
 };
 
 export const cancelRide = async (request: Request, response: Response) => {
