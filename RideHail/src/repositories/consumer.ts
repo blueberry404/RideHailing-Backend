@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { Consumers } from '../entities/consumers';
 import { IConsumerStateChange } from '../interfaces/stateChange';
+import { ILoginRequest } from '../interfaces/loginRequest';
 
 export const getAll = async () => {
     return getRepository(Consumers).find();
@@ -17,6 +18,19 @@ export const changeConsumerState = async (req: IConsumerStateChange) => {
             user.state = req.state;
         }
         return "User not found";
+    }
+    catch(error) {
+        return error;
+    }
+};
+
+export const getUser = async (req: ILoginRequest) => {
+    try {
+        return getRepository(Consumers).findOne(undefined, {
+            where: {
+                email: req.email
+            }
+        });
     }
     catch(error) {
         return error;
