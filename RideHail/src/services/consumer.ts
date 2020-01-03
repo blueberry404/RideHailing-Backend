@@ -17,22 +17,22 @@ export const saveConsumer = async (consumerReq: IConsumer) => {
     if(error) {
         return error;
     }
+    
+    const consumer = new Consumers(consumerReq);
+    const hash = await Auth.hashPassword(consumerReq.password);
+    if (hash instanceof Error) {
+        return hash;
+    }
     else {
-        const consumer = new Consumers(consumerReq);
-        const hash = await Auth.hashPassword(consumerReq.password);
-        if(hash instanceof Error) {
-            return hash;
-        }
-        else {
-            consumer.passwordHash = hash;
-            try {
-                const saved = await repo.save(consumer)
-                return saved;
-            } catch (error) {
-                return error;
-            }
+        consumer.passwordHash = hash;
+        try {
+            const saved = await repo.save(consumer)
+            return saved;
+        } catch (error) {
+            return error;
         }
     }
+
 
     //TODO: work on validations and seeding
     //https://github.com/mattwelke/example-typeorm-postgres

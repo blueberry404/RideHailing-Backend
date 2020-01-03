@@ -1,4 +1,7 @@
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import { User } from '../entities/user';
+import { resolve } from 'dns';
 
 export default class Auth {
 
@@ -12,5 +15,29 @@ export default class Auth {
             });
         });
         return result;
+    }
+
+    public static async comparePasswords(userPassword:string, encrypted: string) {
+       return new Promise((resolve, reject) => {
+
+            bcrypt.compare(userPassword, encrypted, (err, isSame) => {
+                if(err) reject(err);
+                resolve(isSame);
+            });
+        });
+    }
+
+    public static async generateJWT(user: User) {
+        return new Promise((resolve, reject) => {
+
+            const { email, firstName, lastName } = user;
+            jwt.sign({
+                email, firstName, lastName
+            }, 
+            process.env.JWT_SECRET as string, 
+            { expiresIn: '1d' }, (err, token) => {
+                err ? reject(err) : resolve(token);
+            });
+        });
     }
 }

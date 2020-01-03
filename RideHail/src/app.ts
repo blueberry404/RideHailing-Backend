@@ -4,6 +4,7 @@ import url from 'url';
 import Arena from 'bull-arena';
 
 import * as users from './controllers/users';
+import * as auth from './controllers/auth';
 import errorMiddleware from './middlewares/error';
 
 import { FIND_NEARBY_DRIVER_URL } from './tasks/queues';
@@ -44,6 +45,7 @@ class App {
   }
 
   private registerRoutes() {
+    this.app.post('/login', auth.login);
     this.app.get('/users/consumers', users.getAllConsumers);
     this.app.get('/users/drivers', users.getAllDrivers);
     this.app.post('/users/consumer/create', users.createConsumer);

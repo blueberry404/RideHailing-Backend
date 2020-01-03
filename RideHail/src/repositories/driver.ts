@@ -4,6 +4,7 @@ import { IDriverLocationUpdate } from '../interfaces/driverRequest';
 import { Ride } from '../entities/ride';
 import { DriverState } from '../enums/DriverState';
 import { IDriverStateChange } from '../interfaces/stateChange';
+import { ILoginRequest } from '../interfaces/loginRequest';
 
 export const getAll = async () => {
     return getRepository(Drivers).find();
@@ -65,6 +66,19 @@ export const changeDriverState = async (req: IDriverStateChange) => {
             user.state = req.state;
         }
         return "User not found";
+    }
+    catch(error) {
+        return error;
+    }
+};
+
+export const getUser = async (req: ILoginRequest) => {
+    try {
+        return getRepository(Drivers).findOne(undefined, {
+            where: {
+                email: req.email
+            }
+        });
     }
     catch(error) {
         return error;
