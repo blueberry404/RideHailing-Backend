@@ -13,6 +13,9 @@ export class UserLocations {
     @Column('json')
     public location!: { latitude: number, longitude: number }
 
+    @Column()
+    public rideId! : number
+
     @ManyToOne(type => Ride, ride => ride.locations)
     public ride!: Ride
 }

@@ -48,6 +48,12 @@ export class Ride {
     @ManyToOne(type => Consumers, consumer => consumer.rides)
     public consumer!: Consumers
 
+    @Column()
+    public consumerId!: number
+
     @ManyToOne(type => Drivers, driver => driver.rides)
     public driver!: Drivers
+
+    @Column({ nullable: true })
+    public driverId!: number
 }
