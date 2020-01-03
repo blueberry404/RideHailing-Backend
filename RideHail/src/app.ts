@@ -85,17 +85,14 @@ class App {
   }
 
   private listenToSocket() {
-    this.io.on('connection', (socket: any) => {
+    this.io.on('connect', (socket: any) => {
 
       console.log('Connected client on port %s.', this.port);
 
-      // socket.on('message', (m: ChatMessage) => {
-      //   console.log('[server](message): %s', JSON.stringify(m));
-      //   this.io.emit('message', m);
-      // });
-
-      socket.on('available', () => {
+      socket.on('available', (test: ISocketTest) => {
         console.log('Client available');
+        console.log(`Message received is:::: ${JSON.stringify(test)}`);
+        socket.emit('ServerMessage', { message: "Hello World with Sockets and Love!" });
       });
 
       socket.on('disconnect', () => {
@@ -110,6 +107,11 @@ class App {
     });
   }
     
+}
+
+interface ISocketTest {
+  name: string;
+  email: string;
 }
 
 export default App;
