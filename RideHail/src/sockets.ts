@@ -1,4 +1,5 @@
 import SocketIO from 'socket.io';
+import { setAsync } from './redisClient';
 
 class Sockets {
     private io: SocketIO.Server;
@@ -14,16 +15,21 @@ class Sockets {
 
             console.log('Connected client on port %s.', this.port);
       
-            socket.on('available', (test: ISocketTest) => {
+            socket.on('available', (connectEvent: ISocketConnectEvent) => {
               console.log('Client available');
-              console.log(`Message received is:::: ${JSON.stringify(test)}`);
+              console.log(`Client available:::: ${JSON.stringify(connectEvent)}`);
               socket.emit('ServerMessage', { message: "Hello World with Sockets and Love!" });
             });
       
-            socket.on('connect', (test: any) => {
-              console.log('Client connect');
-              console.log(`Message received is:::: ${JSON.stringify(test)}`);
-              socket.emit('ServerMessage', { message: "Hello World with Sockets and Love On Connect!" });
+            socket.on('connect', async (connectEvent: ISocketConnectEvent) => {
+              console.log(`Client connect:::: ${JSON.stringify(connectEvent)}`);
+              //save socket info on redis for later use
+              const payload = {
+                  userID: connectEvent.userID,
+                  socketID: socket.id
+              };
+              console.log(`Payload on connect with ID... ${JSON.stringify(payload)}`);
+              await setAsync(connectEvent.userID.toString(), JSON.stringify(payload));
             });
       
             socket.on('disconnect', () => {
@@ -31,6 +37,10 @@ class Sockets {
             });
           });
     }
+}
+
+interface ISocketConnectEvent {
+    userID: number;
 }
 
 

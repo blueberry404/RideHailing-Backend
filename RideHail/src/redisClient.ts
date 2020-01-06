@@ -1,12 +1,15 @@
 import * as Redis from 'redis';
 import { promisify } from 'util';
+import { RedisConfigSignature } from './interfaces/RedisConfigSignature';
 
-const host: string = process.env.REDIS_URL as string;
-const client = Redis.createClient(host);
+export function getRedisConfig() : RedisConfigSignature {
+    return {
+      host: process.env.REDIS_URL as string,
+      port: Number(process.env.REDIS_PORT)
+    };
+}
 
-module.exports = {
-    ...client,
-    getAsync: promisify(client.get).bind(client),
-    setAsync: promisify(client.set).bind(client),
-    keysAsync: promisify(client.keys).bind(client)
-};
+export const client = Redis.createClient(getRedisConfig());
+export const getAsync = promisify(client.get).bind(client);
+export const setAsync = promisify(client.set).bind(client);
+export const keysAsync = promisify(client.keys).bind(client);
