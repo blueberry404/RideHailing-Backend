@@ -3,25 +3,25 @@ import bodyParser from 'body-parser';
 import url from 'url';
 import Arena from 'bull-arena';
 import * as http from 'http';
-import SocketIO from 'socket.io';
 
 import * as users from './controllers/users';
 import * as auth from './controllers/auth';
 import errorMiddleware from './middlewares/error';
 
 import { FIND_NEARBY_DRIVER_URL } from './tasks/queues';
+import Sockets from './sockets';
 
 class App {
   public app: express.Application;
   public port: number;
   private server: http.Server;
-  private io: SocketIO.Server;
+  private sockets: Sockets;
 
   constructor(port: number) {
     this.app = express();
     this.port = port;
     this.server = http.createServer(this.app);
-    this.io = SocketIO(this.server);
+    this.sockets = new Sockets(this.server, this.port);
 
     //Express configuration
     this.initializaMiddleWares();
@@ -81,24 +81,7 @@ class App {
     this.listenToServer();
 
     //socket events
-    this.listenToSocket();
-  }
-
-  private listenToSocket() {
-    this.io.on('connect', (socket: any) => {
-
-      console.log('Connected client on port %s.', this.port);
-
-      socket.on('available', (test: ISocketTest) => {
-        console.log('Client available');
-        console.log(`Message received is:::: ${JSON.stringify(test)}`);
-        socket.emit('ServerMessage', { message: "Hello World with Sockets and Love!" });
-      });
-
-      socket.on('disconnect', () => {
-        console.log('Client disconnected');
-      });
-    });
+    this.sockets.listenToSocket();
   }
 
   private listenToServer() {
@@ -107,11 +90,6 @@ class App {
     });
   }
     
-}
-
-interface ISocketTest {
-  name: string;
-  email: string;
 }
 
 export default App;
