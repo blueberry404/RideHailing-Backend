@@ -69,6 +69,10 @@ export const bookRide = async (request: Request, response: Response, next: NextF
     const req = request.body;
     const booking: any = await rideService.bookRide(req);
     if(booking instanceof Ride) {
+        await consumerService.changeConsumerState({
+            id: booking.consumerId,
+            state: ConsumerState.FINDING_RIDE
+        });
         queues[FIND_NEARBY_DRIVER_URL].add({
             booking,
         });
