@@ -16,7 +16,6 @@ class Sockets {
             console.log('Connected client on port %s.', this.port);
       
             socket.on('available', (connectEvent: ISocketConnectEvent) => {
-              console.log('Client available');
               console.log(`Client available:::: ${JSON.stringify(connectEvent)}`);
               socket.emit('ServerMessage', { message: "Hello World with Sockets and Love!" });
             });
@@ -24,12 +23,12 @@ class Sockets {
             socket.on('connect', async (connectEvent: ISocketConnectEvent) => {
               console.log(`Client connect:::: ${JSON.stringify(connectEvent)}`);
               //save socket info on redis for later use
-              const payload = {
-                  userID: connectEvent.userID,
-                  socketID: socket.id
-              };
-              console.log(`Payload on connect with ID... ${JSON.stringify(payload)}`);
-              await setAsync(connectEvent.userID.toString(), JSON.stringify(payload));
+              await this.onUserConnect(connectEvent, socket);
+            });
+
+            socket.on('rideAccepted', async (payload: ISocketAcceptRide) => {
+              console.log(`Payload on rideAccepted... ${JSON.stringify(payload)}`);
+              this.onRideAcceptByDriver(payload);
             });
       
             socket.on('disconnect', () => {
@@ -37,16 +36,38 @@ class Sockets {
             });
           });
     }
+
+  private async onUserConnect(connectEvent: ISocketConnectEvent, socket: any) {
+    const payload = {
+      userID: connectEvent.userID,
+      socketID: socket.id
+    };
+    console.log(`Payload on connect with ID... ${JSON.stringify(payload)}`);
+    await setAsync(connectEvent.userID.toString(), JSON.stringify(payload));
+  }
+
+    onRideAcceptByDriver(payload: ISocketAcceptRide) {
+      
+    }
+
+    notifyDriverRideAlreadyBooked() {
+
+    }
+
+    notifyConsumerAboutRideAccepted() {
+      
+    }
+    
 }
 
 interface ISocketConnectEvent {
     userID: number;
 }
 
-
-interface ISocketTest {
-    name: string;
-    email: string;
+interface ISocketAcceptRide {
+    consumerId: number;
+    rideId: number;
+    driverId: number;
   }
 
 export default Sockets;
