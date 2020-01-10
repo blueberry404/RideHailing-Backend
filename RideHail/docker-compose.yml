@@ -1,21 +1,17 @@
 version: '3'
 services: 
     redis:
-        image: redis
-        container_name: ride-cache
-        expose:
-          - 6379
+        image: redis:5.0.7
     app:
         container_name: 'ridehail'
         build: .
         depends_on: 
             - postgres
-        links:
             - redis
         ports: 
             - "3000:3000"
         environment:
-            REDIS_URL: "${REDIS_URL}"
+            - REDIS_URL="${REDIS_URL}"
     postgres:
         image: postgres:12.1
         ports: 
@@ -31,6 +27,6 @@ services:
         environment:
             NODE_ENV: 'development'
             PORT: 3000
-            REDIS_URL: "${REDIS_URL}"
-        links:
+        depends_on:
+            - postgres
             - redis

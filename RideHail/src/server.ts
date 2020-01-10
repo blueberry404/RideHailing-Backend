@@ -13,7 +13,6 @@ import { typeOrmConfig } from './config';
 
 (async () => {
   try {
-    console.error(typeOrmConfig);
     const conn = await createConnection(typeOrmConfig);
     console.log('PG connected.');
     
