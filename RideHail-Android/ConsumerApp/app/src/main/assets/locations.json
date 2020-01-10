@@ -1,0 +1,38 @@
+[
+  {
+    "source": "Char Minar Chowrangi",
+    "dest": "National Stadium Of Pakistan",
+    "sourceCoords": {
+      "latitude": 24.882841,
+      "longitude": 67.067227
+    },
+    "destCoords": {
+      "latitude": 24.897540,
+      "longitude": 67.081527
+    }
+  },
+  {
+    "source": "Lucky One Mall",
+    "dest": "National Stadium Of Pakistan",
+    "sourceCoords": {
+      "latitude": 24.935005,
+      "longitude": 67.087413
+    },
+    "destCoords": {
+      "latitude": 24.897540,
+      "longitude": 67.081527
+    }
+  },
+  {
+    "source": "Lucky One Mall",
+    "dest": "Check Post No 6, Malir Cantt",
+    "sourceCoords": {
+      "latitude": 24.935005,
+      "longitude": 67.087413
+    },
+    "destCoords": {
+      "latitude": 24.939319,
+      "longitude": 67.177694
+    }
+  }
+]
