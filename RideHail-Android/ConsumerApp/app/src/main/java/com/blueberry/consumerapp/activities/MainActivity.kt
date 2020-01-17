@@ -1,8 +1,12 @@
-package com.blueberry.consumerapp
+package com.blueberry.consumerapp.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import androidx.appcompat.app.AppCompatActivity
+import com.blueberry.consumerapp.R
+import com.blueberry.consumerapp.adapters.LocationSpinnerAdapter
+import com.blueberry.consumerapp.entities.Route
+import com.blueberry.consumerapp.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -12,10 +16,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
         getUserProfile()
         populateSpinner()
     }
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun populateSpinner() {
-
+        spinner.adapter = LocationSpinnerAdapter(this, getLocations())
     }
 
     private fun getLocations() : List<Route> {
@@ -34,12 +34,11 @@ class MainActivity : AppCompatActivity() {
         rawData?.let {
             val jsonArr = JSONArray(it)
             for (i in 0 until jsonArr.length()) {
-                val obj = jsonArr.get(i)
                 val route = Route()
+                route.parse(jsonArr.get(i) as JSONObject)
                 list.add(route)
             }
         }
         return list
     }
-
 }

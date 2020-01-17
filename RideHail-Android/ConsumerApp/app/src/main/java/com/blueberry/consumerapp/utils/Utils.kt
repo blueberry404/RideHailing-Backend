@@ -1,4 +1,4 @@
-package com.blueberry.consumerapp
+package com.blueberry.consumerapp.utils
 
 import android.content.Context
 import java.io.IOException
