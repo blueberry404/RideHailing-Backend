@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "fa911e19-346c-4f96-8254-aa8120cec4fd",
+		"name": "RideHail",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"monica.chandler@gmail.com\",\n\t\"password\": \"123456\",\n\t\"type\": \"Consumer\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Ride",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"consumerId\": 3,\n\t\"rideId\" : 67,\n\t\"userType\": \"Consumer\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/cancelRide",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cancelRide"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Driver",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"Frank\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"frank.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/driver/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"driver",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consumers list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/consumers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"consumers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Location/Status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 36,\n\t\"location\": {\n\t\t\"latitude\": 24.881469,\n\t\t\"longitude\" : 67.070522\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/driver/updateLocation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"driver",
+						"updateLocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Ride",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"consumerId\": 3,\n\t\"rideId\" : 66,\n\t\"userType\": \"Consumer\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/cancelRide",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cancelRide"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Drivers list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/drivers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"drivers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Consumer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/consumer/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"consumer",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3000/users/bookRide",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": 6,\n\t\"sourceLat\": 24.906787,\n\t\"sourceLong\": 67.064565,\n\t\"destLat\": 24.881009,\n\t\"destLong\": 67.037137\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/bookRide",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"bookRide"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Ride",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"consumerId\": 3,\n\t\"rideId\" : 66,\n\t\"userType\": \"Consumer\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/cancelRide",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cancelRide"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
