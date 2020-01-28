@@ -5,7 +5,10 @@ import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import com.blueberry.consumerapp.R
 import com.blueberry.consumerapp.adapters.LocationSpinnerAdapter
+import com.blueberry.consumerapp.entities.LoginInput
 import com.blueberry.consumerapp.entities.Route
+import com.blueberry.consumerapp.rest.ServiceManager
+import com.blueberry.consumerapp.rest.UserService
 import com.blueberry.consumerapp.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
@@ -21,7 +24,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUserProfile() {
-
+        val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
+//        service.login(LoginInput())
     }
 
     private fun populateSpinner() {

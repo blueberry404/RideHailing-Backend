@@ -5,13 +5,13 @@ import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ServiceClient() {
+class ServiceClient {
 
     var retrofit: Retrofit
 
     init {
         retrofit = Retrofit.Builder()
-                .baseUrl("http://localhost:3000")
+                .baseUrl("http://172.16.16.253:3000")
                 .addConverterFactory(GsonConverterFactory.create(getGson()))
                 .build()
     }
