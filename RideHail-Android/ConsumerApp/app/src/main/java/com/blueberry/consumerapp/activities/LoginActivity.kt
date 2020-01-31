@@ -12,11 +12,12 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class LoginActivity: AppCompatActivity() {
 
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-    private val TAG = LoginActivity::class.simpleName
+    private val TAG = LoginActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,14 @@ class LoginActivity: AppCompatActivity() {
     private fun authenticateUser() {
 
         coroutineScope.launch {
-            val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
-            val response = service.login(LoginInput(username.text.toString(), password.text.toString()))
-            Log.e(TAG, response.toString())
+            try {
+                val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
+                val response = service.login(LoginInput(username.text.toString(), password.text.toString()))
+                Log.e(TAG, response.toString())
+            }
+            catch(ex: Exception) {
+                Toast.makeText(this@LoginActivity, ex.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
