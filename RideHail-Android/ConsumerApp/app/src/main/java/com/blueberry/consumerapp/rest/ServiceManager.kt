@@ -8,7 +8,7 @@ class ServiceManager private constructor() {
     private var serviceCache : ConcurrentHashMap<String, Any>
 
     init {
-        serviceClient = ServiceClient()
+        serviceClient = ServiceClient(ServiceInterceptor())
         serviceCache = ConcurrentHashMap()
     }
 

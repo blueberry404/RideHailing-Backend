@@ -1,5 +1,6 @@
 package com.blueberry.consumerapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -58,8 +59,12 @@ class LoginActivity: AppCompatActivity() {
                 val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
                 val response = service.login(LoginInput(username.text.toString(), password.text.toString()))
                 val result = response.result
-                if(!result.isNullOrEmpty() && result.containsKey(KEY_TOKEN))
-                    Utils.getSharedPreferences(this@LoginActivity).edit(true) { putString(KEY_TOKEN, result[KEY_TOKEN] as String) }
+                if(!result.isNullOrEmpty() && result.containsKey(KEY_TOKEN)) {
+                    Utils.getSharedPreferences(this@LoginActivity)
+                        .edit(true) { putString(KEY_TOKEN, result[KEY_TOKEN] as String) }
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                }
                 else
                     Toast.makeText(this@LoginActivity, R.string.login_failed, Toast.LENGTH_SHORT).show()
             }
