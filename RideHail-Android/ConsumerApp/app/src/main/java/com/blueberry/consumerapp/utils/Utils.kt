@@ -1,9 +1,12 @@
 package com.blueberry.consumerapp.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import java.io.IOException
 
 object Utils {
+
+    private const val sharedPreferencesName : String = "RideHailConsumer"
 
     fun loadJSONFromAsset(context: Context, jsonFile: String): String? {
         var json: String? = null
@@ -28,4 +31,6 @@ object Utils {
 
         return json
     }
+
+    fun getSharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
 }
