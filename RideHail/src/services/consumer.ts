@@ -42,3 +42,7 @@ export const saveConsumer = async (consumerReq: IConsumer) => {
 export const changeConsumerState = async (req: IConsumerStateChange) => {
     return repo.changeConsumerState(req);
 };
+
+export const getConsumerProfile = async (id: number) => {
+    return repo.getUserByID(id);
+};

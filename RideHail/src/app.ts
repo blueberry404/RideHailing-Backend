@@ -60,6 +60,8 @@ class App {
     this.app.post('/users/driver/updateLocation', users.updateDriverLocation);
     this.app.post('/bookRide', users.bookRide);
     this.app.post('/cancelRide', users.cancelRide);
+    this.app.get('/users/consumer/myProfile', users.consumerProfile);
+    this.app.get('/users/driver/myProfile', users.driverProfile);
   }
 
   private handleErrors() {

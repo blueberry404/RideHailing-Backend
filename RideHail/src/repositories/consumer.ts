@@ -36,3 +36,16 @@ export const getUser = async (req: ILoginRequest) => {
         return error;
     }
 };
+
+export const getUserByID = async (id: number) => {
+    try {
+        return getRepository(Consumers).findOne(undefined, {
+            where: {
+                id
+            }
+        });
+    }
+    catch(error) {
+        return error;
+    }
+}; 

@@ -124,6 +124,21 @@ export const startRide = async (request: Request, response: Response) => {
     response.json({ success: 'success' });
 };
 
+export const consumerProfile = async (request: Request, response: Response, next: NextFunction) => {
+    const result = await consumerService.getConsumerProfile(1);
+    if(result instanceof Consumers) {
+        const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
+        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }})
+    }
+    else {
+        next(new HTTPException(404, result));
+    }
+};
+
+export const driverProfile = async (request: Request, response: Response, next: NextFunction) => {
+    response.json({ success: 'success' });
+};
+
 /*
 Push notifications:
 - find and notify Nearby Drivers

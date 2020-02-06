@@ -10,9 +10,10 @@ export const login = async (request: Request, response: Response, next: NextFunc
     const user = await checkIfUserExists(req);
     if(user instanceof User) {
         try {
-            const isSame = await Auth.comparePasswords((req as ILoginRequest).password, user.passwordHash);
+            const loginReq = req as ILoginRequest
+            const isSame = await Auth.comparePasswords(loginReq.password, user.passwordHash);
             if(isSame) {
-                const token = await Auth.generateJWT(user);
+                const token = await Auth.generateJWT(user, loginReq.type);
                 if(token instanceof Error) {
                     next(new HTTPException(500, "Some error occured"));
                 }
