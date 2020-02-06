@@ -1,10 +1,14 @@
 package com.blueberry.consumerapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import com.blueberry.consumerapp.R
 import com.blueberry.consumerapp.adapters.LocationSpinnerAdapter
+import com.blueberry.consumerapp.constants.KeyConstants
 import com.blueberry.consumerapp.entities.LoginInput
 import com.blueberry.consumerapp.entities.Route
 import com.blueberry.consumerapp.rest.ServiceManager
@@ -13,13 +17,19 @@ import com.blueberry.consumerapp.utils.Utils
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +40,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getUserProfile() {
-        val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
-//        service.login(LoginInput())
+
+        coroutineScope.launch {
+            try {
+                val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
+                val response = service.getMyProfile()
+                val result = response.result
+                result?.let {
+
+                }
+            }
+            catch(ex: Exception) {
+                Toast.makeText(this@MainActivity, ex.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun populateSpinner() {

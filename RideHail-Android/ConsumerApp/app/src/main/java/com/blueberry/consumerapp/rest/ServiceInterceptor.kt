@@ -1,6 +1,7 @@
 package com.blueberry.consumerapp.rest
 
 import android.content.SharedPreferences
+import com.blueberry.consumerapp.RideApplication
 import com.blueberry.consumerapp.constants.KeyConstants
 import com.blueberry.consumerapp.utils.Utils
 import okhttp3.Interceptor
@@ -49,7 +50,7 @@ class ServiceInterceptor : RestClientInterceptor {
 
     override fun getHeaders(): HashMap<String, String>? {
         val map : HashMap<String, String> = HashMap()
-        val token = Utils.getSharedPreferences().getString(KeyConstants.KEY_TOKEN)
+        val token = Utils.getSharedPreferences(RideApplication.instance).getString(KeyConstants.KEY_TOKEN, null)
         token?.let {
             map[KeyConstants.KEY_TOKEN] = token
         }
