@@ -70,3 +70,7 @@ export const updateDriverLocation = async (req: IDriverLocationUpdate) => {
         }
     }
 };
+
+export const getDriverProfile = async (id: number) => {
+    return repo.getUserByID(id);
+};

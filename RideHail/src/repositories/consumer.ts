@@ -39,11 +39,7 @@ export const getUser = async (req: ILoginRequest) => {
 
 export const getUserByID = async (id: number) => {
     try {
-        return getRepository(Consumers).findOne(undefined, {
-            where: {
-                id
-            }
-        });
+        return getRepository(Consumers).findOne(id);
     }
     catch(error) {
         return error;

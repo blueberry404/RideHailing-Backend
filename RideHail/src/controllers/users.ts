@@ -128,7 +128,7 @@ export const consumerProfile = async (request: Request, response: Response, next
     const result = await consumerService.getConsumerProfile(1);
     if(result instanceof Consumers) {
         const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
-        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }})
+        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
     }
     else {
         next(new HTTPException(404, result));
@@ -136,7 +136,14 @@ export const consumerProfile = async (request: Request, response: Response, next
 };
 
 export const driverProfile = async (request: Request, response: Response, next: NextFunction) => {
-    response.json({ success: 'success' });
+    const result = await driverService.getDriverProfile(1);
+    if(result instanceof Drivers) {
+        const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
+        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
+    }
+    else {
+        next(new HTTPException(404, result));
+    }
 };
 
 /*

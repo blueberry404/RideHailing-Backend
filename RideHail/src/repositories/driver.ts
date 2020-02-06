@@ -84,3 +84,12 @@ export const getUser = async (req: ILoginRequest) => {
         return error;
     }
 };
+
+export const getUserByID = async (id: number) => {
+    try {
+        return getRepository(Drivers).findOne(id);
+    }
+    catch(error) {
+        return error;
+    }
+};
