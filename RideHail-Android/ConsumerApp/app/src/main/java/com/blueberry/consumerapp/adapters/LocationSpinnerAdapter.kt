@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.blueberry.consumerapp.R
 import com.blueberry.consumerapp.entities.Route
 
-class LocationSpinnerAdapter(context: Context, private val list: List<Route>) : BaseAdapter() {
+class LocationSpinnerAdapter(private val context: Context, private val list: List<Route>) : BaseAdapter() {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -26,7 +26,9 @@ class LocationSpinnerAdapter(context: Context, private val list: List<Route>) : 
         }
 
         val route = list[position]
-        holder.textView.text = "${route.source} -> ${route.dest}"
+        holder.textView.text = if (route.source.isEmpty())
+            context.getString(R.string.txt_prompt_selection_ride)
+        else  "${route.source} -> ${route.dest}"
         return view
     }
 

@@ -4,7 +4,7 @@ import org.json.JSONObject
 
 class Route {
 
-    lateinit var source: String
+    var source: String = ""
     lateinit var dest: String
     lateinit var sourceCoords: Location
     lateinit var destCoords: Location

@@ -24,6 +24,7 @@ class LoginActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         onActionListener()
+        checkForLoggedInUser()
     }
 
     private fun onActionListener() {
@@ -31,6 +32,12 @@ class LoginActivity: AppCompatActivity() {
             if(isValid()) {
                 authenticateUser()
             }
+        }
+    }
+
+    private fun checkForLoggedInUser() {
+        if(!Utils.getSharedPreferences(this@LoginActivity).getString(KEY_TOKEN, null).isNullOrBlank()) {
+            navigateToHome()
         }
     }
 
@@ -61,8 +68,7 @@ class LoginActivity: AppCompatActivity() {
                 if(!result.isNullOrEmpty() && result.containsKey(KEY_TOKEN)) {
                     Utils.getSharedPreferences(this@LoginActivity)
                         .edit(true) { putString(KEY_TOKEN, result[KEY_TOKEN] as String) }
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    finish()
+                    navigateToHome()
                 }
                 else
                     Toast.makeText(this@LoginActivity, R.string.login_failed, Toast.LENGTH_SHORT).show()
@@ -71,5 +77,10 @@ class LoginActivity: AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, ex.message, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun navigateToHome() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
     }
 }
