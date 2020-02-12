@@ -12,6 +12,6 @@ interface UserService {
     @POST("login")
     suspend fun login(@Body loginInput: LoginInput) : BaseResponse
 
-    @GET("users/consumer/myProfile")
+    @GET("myProfile")
     suspend fun getMyProfile() : ProfileResponse
 }

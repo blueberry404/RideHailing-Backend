@@ -18,3 +18,11 @@ export interface IConsumer extends IUser {
 export interface IDriver extends IUser {
     state: DriverState;
 }
+
+export interface IUserJWtData {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    type: string;
+}

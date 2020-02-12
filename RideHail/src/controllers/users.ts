@@ -10,6 +10,8 @@ import { queues, FIND_NEARBY_DRIVER_URL } from '../tasks/queues';
 import { IBookingCancelRequest } from '../interfaces/bookingCancelRequest';
 import { ConsumerState } from '../enums/ConsumerState';
 import { DriverState } from '../enums/DriverState';
+import Auth from '../utils/Auth';
+import { IUserJWtData } from '../interfaces/user';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
@@ -124,25 +126,40 @@ export const startRide = async (request: Request, response: Response) => {
     response.json({ success: 'success' });
 };
 
-export const consumerProfile = async (request: Request, response: Response, next: NextFunction) => {
-    const result = await consumerService.getConsumerProfile(1);
-    if(result instanceof Consumers) {
-        const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
-        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
-    }
-    else {
-        next(new HTTPException(404, result));
-    }
-};
+export const myProfile = async (request: Request, response: Response, next: NextFunction) => {
 
-export const driverProfile = async (request: Request, response: Response, next: NextFunction) => {
-    const result = await driverService.getDriverProfile(1);
-    if(result instanceof Drivers) {
-        const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
-        response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
+    const token = request.header("token");
+    if(token) {
+
+        try {
+            const tokenDetails = await Auth.decodeJWT(token) as IUserJWtData;
+            if(tokenDetails.type === 'Consumer') {
+                const result = await consumerService.getConsumerProfile(+tokenDetails.id);
+                if(result instanceof Consumers) {
+                    const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
+                    response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
+                }
+                else {
+                    next(new HTTPException(404, result));
+                }
+            }
+            else {
+                const result = await driverService.getDriverProfile(+tokenDetails.id);
+                if(result instanceof Drivers) {
+                    const { id, firstName, lastName, state, email, mobile, profileImageURL } = result;
+                    response.send({ success: true, result: { id, firstName, lastName, state, email, mobile, profileImageURL }});
+                }
+                else {
+                    next(new HTTPException(404, result));
+                }
+            }
+        }
+        catch(err) {
+            next(new HTTPException(401, 'Unauthorized request'));
+        }
     }
     else {
-        next(new HTTPException(404, result));
+        next(new HTTPException(401, 'Unauthorized request'));
     }
 };
 

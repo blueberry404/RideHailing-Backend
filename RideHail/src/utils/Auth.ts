@@ -1,7 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { User } from '../entities/user';
-import { resolve } from 'dns';
 
 export default class Auth {
 
@@ -38,6 +37,14 @@ export default class Auth {
             { expiresIn: '1d' }, (err, token) => {
                 err ? reject(err) : resolve(token);
             });
+        });
+    }
+
+    public static async decodeJWT(token: string) {
+        return new Promise((resolve, reject) => {
+            jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+                err ? reject(err) : resolve(decoded)
+            })
         });
     }
 }
