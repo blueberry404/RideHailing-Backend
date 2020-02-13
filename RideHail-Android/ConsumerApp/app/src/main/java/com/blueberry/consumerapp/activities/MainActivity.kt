@@ -208,9 +208,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             builder.include(addMarkerToMap(route.source, route.sourceCoords).position)
             builder.include(addMarkerToMap(route.dest, route.destCoords).position)
 
-            val width = resources.displayMetrics.widthPixels - Utils.convertDpToPixel(32.0f)
-            val height = resources.displayMetrics.heightPixels
-
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), Utils.convertDpToPixel(50.0f).toInt()))
         }
     }
