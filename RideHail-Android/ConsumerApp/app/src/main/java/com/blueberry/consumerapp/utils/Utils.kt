@@ -2,6 +2,8 @@ package com.blueberry.consumerapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Resources
+import android.util.DisplayMetrics
 import java.io.IOException
 
 object Utils {
@@ -33,4 +35,12 @@ object Utils {
     }
 
     fun getSharedPreferences(context: Context): SharedPreferences = context.getSharedPreferences(sharedPreferencesName, Context.MODE_PRIVATE)
+
+    fun convertDpToPixel(dp: Float): Float {
+        return dp * (Resources.getSystem().displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun convertPixelsToDp(px: Float): Float {
+        return px / (Resources.getSystem().displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
 }

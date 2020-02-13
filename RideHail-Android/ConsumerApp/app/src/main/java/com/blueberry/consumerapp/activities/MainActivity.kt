@@ -1,10 +1,11 @@
 package com.blueberry.consumerapp.activities
 
 import android.Manifest
-import android.content.Context
 import android.content.IntentSender
 import android.location.Location
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.blueberry.consumerapp.R
@@ -23,20 +24,26 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsResponse
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationList: MutableList<Route>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setActions() {
         btnMyLocation.setOnClickListener { checkForLocation()}
+
+        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                showSelectedLocationsOnMap(p2)
+            }
+
+        }
     }
 
     private fun getUserProfile() {
@@ -71,7 +89,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun populateSpinner() {
-        spinner.adapter = LocationSpinnerAdapter(this, getLocations())
+        initLocations()
+        spinner.adapter = LocationSpinnerAdapter(this, locationList)
     }
 
     private fun initLocationServices() {
@@ -82,19 +101,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private fun getLocations() : List<Route> {
-        val list = mutableListOf<Route>()
-        list.add(Route())
+    private fun initLocations() {
+        locationList = mutableListOf()
+        locationList.add(Route())
         val rawData = Utils.loadJSONFromAsset(this, "locations.json")
         rawData?.let {
             val jsonArr = JSONArray(it)
             for (i in 0 until jsonArr.length()) {
                 val route = Route()
                 route.parse(jsonArr.get(i) as JSONObject)
-                list.add(route)
+                locationList.add(route)
             }
         }
-        return list
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -179,6 +197,32 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(position))
         else
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(position))
+    }
+
+    private fun showSelectedLocationsOnMap(selectedItem: Int) {
+        mMap.clear()
+        if(selectedItem > 0) {
+            val route = locationList[selectedItem]
+            val builder = LatLngBounds.Builder()
+
+            builder.include(addMarkerToMap(route.source, route.sourceCoords).position)
+            builder.include(addMarkerToMap(route.dest, route.destCoords).position)
+
+            val width = resources.displayMetrics.widthPixels - Utils.convertDpToPixel(32.0f)
+            val height = resources.displayMetrics.heightPixels
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), Utils.convertDpToPixel(50.0f).toInt()))
+        }
+    }
+
+    private fun addMarkerToMap(title: String, location: com.blueberry.consumerapp.entities.Location): Marker {
+        return mMap.addMarker(
+            MarkerOptions().position(LatLng(location.latitude, location.longitude))
+                .title(title)
+                .icon(
+                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+                )
+        )
     }
 
     //endregion
