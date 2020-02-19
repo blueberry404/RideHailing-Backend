@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">DriverApp</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_maps">Map</string>
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to show location on the
+        map.
+    </string>
+    <string name="location_permission_denied">This app requires location permission to show location on map. Please try
+        again and grant access to use the location.
+    </string>
+    <string name="permission_required_toast">Location permission is required to show location on the map.</string>
+
 </resources>
