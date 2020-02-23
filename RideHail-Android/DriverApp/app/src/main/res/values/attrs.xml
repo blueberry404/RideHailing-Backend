@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="DriverState">
-        <attr name="state_not_available" format="string" />
-        <attr name="state_idle" format="string" />
-        <attr name="state_busy" format="string" />
+        <attr name="state" format="string" />
     </declare-styleable>
 </resources>
