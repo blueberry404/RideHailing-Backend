@@ -2,10 +2,11 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
-    <item custom:state="NotAvailable"
+    <item custom:state_not_available="true"
         android:drawable="@drawable/drawable_icon_not_available"/>
-    <item custom:state="Idle"
+    <item custom:state_idle="true"
         android:drawable="@drawable/drawable_icon_idle"/>
-    <item custom:state="Busy"
+    <item custom:state_busy="true"
         android:drawable="@drawable/drawable_icon_busy"/>
+    <item android:drawable="@drawable/drawable_icon_busy" />
 </selector>

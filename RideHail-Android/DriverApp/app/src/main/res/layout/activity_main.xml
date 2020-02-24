@@ -11,7 +11,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/viewState"
-        app:state="Busy"
+        app:state_idle="true"
         android:layout_marginLeft="10dp"/>
 
     <TextView
