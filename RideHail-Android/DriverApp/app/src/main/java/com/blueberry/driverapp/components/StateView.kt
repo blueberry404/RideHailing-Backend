@@ -40,6 +40,7 @@ class StateView @JvmOverloads constructor(
     }
 
     private fun assignState(state: String) {
+
         mState = when(state) {
             "NotAvailable" -> DriverState.NOT_AVAILABLE
             "Idle" -> DriverState.IDLE
@@ -48,10 +49,4 @@ class StateView @JvmOverloads constructor(
         }
     }
 
-    override fun onCreateDrawableState(extraSpace: Int): IntArray {
-
-        val drawableStates = super.onCreateDrawableState(extraSpace + 1)
-        mergeDrawableStates(drawableStates, STATE)
-        return drawableStates
-    }
 }

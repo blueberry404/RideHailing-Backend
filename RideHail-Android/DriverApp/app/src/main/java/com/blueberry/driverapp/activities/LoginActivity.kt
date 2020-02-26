@@ -80,7 +80,7 @@ class LoginActivity: AppCompatActivity() {
     }
 
     private fun navigateToHome() {
-//        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-//        finish()
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
     }
 }
