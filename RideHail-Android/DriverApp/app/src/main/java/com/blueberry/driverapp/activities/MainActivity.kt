@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.IntentSender
 import android.location.Location
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -88,18 +89,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setUserIdle() {
-        txtState.text = "You are Idle"
+        txtState.text = getString(R.string.txt_ready)
         viewState.background = ContextCompat.getDrawable(this, R.drawable.drawable_icon_idle)
+        btnChangeStatus.text = getString(R.string.txt_make_not_available)
+        btnChangeStatus.visibility = View.VISIBLE
     }
 
     private fun setUserBusy() {
-        txtState.text = "You are Busy"
+        txtState.text = getString(R.string.txt_already_have_ride)
         viewState.background = ContextCompat.getDrawable(this, R.drawable.drawable_icon_busy)
+        btnChangeStatus.visibility = View.GONE
     }
 
     private fun setUserNotAvailable() {
-        txtState.text = "You are Not Available"
+        txtState.text = getString(R.string.txt_no_ride)
         viewState.background = ContextCompat.getDrawable(this, R.drawable.drawable_icon_not_available)
+        btnChangeStatus.text = getString(R.string.txt_make_available)
+        btnChangeStatus.visibility = View.VISIBLE
     }
 
     private fun initLocationServices() {
