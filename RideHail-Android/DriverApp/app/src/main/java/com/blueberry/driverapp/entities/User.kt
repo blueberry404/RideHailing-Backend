@@ -7,7 +7,7 @@ data class User(
     val userId: Int,
     val firstName: String,
     val lastName: String?,
-    val state: String,
+    var state: String,
     val email: String,
     val mobile: String,
     val profileImageURL: String?

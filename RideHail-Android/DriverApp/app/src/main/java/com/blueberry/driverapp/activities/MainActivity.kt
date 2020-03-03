@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.blueberry.consumerapp.config.AppConfig
 import com.blueberry.consumerapp.constants.KeyConstants
+import com.blueberry.consumerapp.entities.StateChangeInput
 import com.blueberry.consumerapp.entities.User
 import com.blueberry.consumerapp.rest.ServiceManager
 import com.blueberry.consumerapp.rest.UserService
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         initLocationServices()
+        onActionListener()
         getUserProfile()
     }
 
@@ -58,6 +60,47 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             mMap.isMyLocationEnabled = true
             checkForLocation()
         }
+    }
+
+    private fun onActionListener() {
+        btnChangeStatus.setOnClickListener { handleOnButtonClick() }
+    }
+
+    private fun handleOnButtonClick() {
+        if(btnChangeStatus.text.toString() == getString(R.string.txt_make_available))
+            changeStateOnServer(AppConfig.STATE_NOT_AVAILABLE)
+        else if(btnChangeStatus.text.toString() == getString(R.string.txt_make_available))
+            changeStateOnServer(AppConfig.STATE_IDLE)
+        else {
+            //cancel
+        }
+    }
+
+    private fun changeStateOnServer(state: String) {
+
+        val driver = AppConfig.profile
+        driver?.let {
+
+            coroutineScope.launch {
+                try {
+                    val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
+                    val response = service.changeStatus(StateChangeInput(it.userId, state))
+                    if(response.success) {
+                        driver.state = state
+                        setUserState(driver)
+                    }
+                    else {
+                        Toast.makeText(this@MainActivity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                catch(ex: Exception) {
+                    Toast.makeText(this@MainActivity, ex.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        } ?:
+            Toast.makeText(this, "Profile not found", Toast.LENGTH_SHORT).show()
+
     }
 
     //region User State
@@ -82,9 +125,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setUserState(profile: User) {
         when(profile.state) {
-            "IDLE" -> setUserIdle()
-            "BUSY" -> setUserBusy()
-            "NOT_AVAILABLE" -> setUserNotAvailable()
+            AppConfig.STATE_IDLE -> setUserIdle()
+            AppConfig.STATE_BUSY -> setUserBusy()
+            AppConfig.STATE_NOT_AVAILABLE -> setUserNotAvailable()
         }
     }
 
