@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.RideRequestActivity"
+    android:background="@color/color_blue_shade"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/titleBookingId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/txt_booking_id"
+        style="@style/title_small"/>
+
+    <TextView
+        android:id="@+id/txtBookingId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleBookingId"
+        android:text="N/A"
+        style="@style/details_text"/>
+
+    <TextView
+        android:id="@+id/titlePayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/txt_payment_method"
+        style="@style/title_small"/>
+
+    <TextView
+        android:id="@+id/txtCash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlePayment"
+        android:text="@string/txt_cash"
+        style="@style/details_text"/>
+
+    <TextView
+        android:id="@+id/titleRiderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtBookingId"
+        android:text="@string/txt_rider_name"
+        style="@style/title_small"
+        android:layout_marginTop="@dimen/margin_booking"/>
+
+    <TextView
+        android:id="@+id/txtRider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleRiderTitle"
+        android:text="N/A"
+        style="@style/details_text"/>
+
+    <TextView
+        android:id="@+id/titlePickupTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtRider"
+        android:text="@string/txt_pickup_addr"
+        style="@style/title_small"
+        android:layout_marginTop="@dimen/margin_booking"/>
+
+    <TextView
+        android:id="@+id/txtPickup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titlePickupTitle"
+        android:text="N/A"
+        style="@style/details_text"/>
+
+    <TextView
+        android:id="@+id/titleDestTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPickup"
+        android:text="@string/txt_dest_addr"
+        style="@style/title_small"
+        android:layout_marginTop="@dimen/margin_booking"/>
+
+    <TextView
+        android:id="@+id/txtDest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleDestTitle"
+        android:text="N/A"
+        style="@style/details_text"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

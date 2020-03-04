@@ -16,11 +16,19 @@
         again and grant access to use the location.
     </string>
     <string name="permission_required_toast">Location permission is required to show location on the map.</string>
-    
+
     <string name="txt_make_not_available">Make Not Available</string>
     <string name="txt_make_available">Make Available</string>
     <string name="txt_ready">You are ready to accept rides</string>
     <string name="txt_already_have_ride">You already have a ride. Can\'t accept new rides</string>
     <string name="txt_no_ride">You cannot receive rides</string>
+
+    <string name="title_ride_request">Ride Request</string>
+    <string name="txt_booking_id">Booking ID</string>
+    <string name="txt_payment_method">Payment Method</string>
+    <string name="txt_cash">Cash</string>
+    <string name="txt_rider_name">Rider Name</string>
+    <string name="txt_pickup_addr">Pickup Address</string>
+    <string name="txt_dest_addr">Destination Address</string>
 
 </resources>
