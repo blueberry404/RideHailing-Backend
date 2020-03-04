@@ -30,5 +30,7 @@
     <string name="txt_rider_name">Rider Name</string>
     <string name="txt_pickup_addr">Pickup Address</string>
     <string name="txt_dest_addr">Destination Address</string>
+    <string name="txt_accept">Accept</string>
+    <string name="txt_reject">Reject</string>
 
 </resources>
