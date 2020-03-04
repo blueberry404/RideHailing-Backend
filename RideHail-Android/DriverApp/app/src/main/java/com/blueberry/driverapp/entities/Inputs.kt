@@ -6,6 +6,6 @@ class LoginInput constructor(val email: String, val password: String, val type: 
 
 class ProfileResponse constructor(val success:Boolean, val result: User?)
 
-class StateChangeInput constructor(id: Int, state: String)
+class StateChangeInput constructor(val id: Int, val state: String)
 
 class MessageResponse constructor(val success:Boolean, val message: String)

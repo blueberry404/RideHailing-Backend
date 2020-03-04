@@ -68,9 +68,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun handleOnButtonClick() {
         if(btnChangeStatus.text.toString() == getString(R.string.txt_make_available))
-            changeStateOnServer(AppConfig.STATE_NOT_AVAILABLE)
-        else if(btnChangeStatus.text.toString() == getString(R.string.txt_make_available))
             changeStateOnServer(AppConfig.STATE_IDLE)
+        else if(btnChangeStatus.text.toString() == getString(R.string.txt_make_not_available))
+            changeStateOnServer(AppConfig.STATE_NOT_AVAILABLE)
         else {
             //cancel
         }

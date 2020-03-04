@@ -64,8 +64,9 @@ export const changeDriverState = async (req: IDriverStateChange) => {
         const user = await getRepository(Drivers).findOne(req.id);
         if(user) {
             user.state = req.state;
+            return save(user);
         }
-        return "User not found";
+        return user;
     }
     catch(error) {
         return error;

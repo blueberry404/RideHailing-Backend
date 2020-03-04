@@ -17,4 +17,4 @@ RUN npm run tsc
 # If you are building your code for production
 # RUN npm ci --only=production
 
-CMD [ "node", "./build/server.js" ]
+CMD [ "npm", "run", "docker-dev" ]

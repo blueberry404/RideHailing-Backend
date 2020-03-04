@@ -19,11 +19,11 @@ class ServiceInterceptor : RestClientInterceptor {
 
     override fun getBaseURL(): String = "http://172.16.16.253:3000" //"http://10.0.2.2:3000"
 
-    override fun intercept(chain: Interceptor.Chain?): Response {
+    override fun intercept(chain: Interceptor.Chain): Response {
 
         var request = chain?.request()
 
-        var requestBuilder: Request.Builder = request?.newBuilder()?.method(request?.method(), request?.body())
+        var requestBuilder: Request.Builder = request?.newBuilder()?.method(request?.method, request?.body)
                 as Request.Builder
 
         getHeaders()?.let { headers->
