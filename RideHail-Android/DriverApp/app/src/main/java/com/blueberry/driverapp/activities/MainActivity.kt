@@ -31,26 +31,39 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
+import java.net.URISyntaxException
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
+    lateinit var socket: Socket
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        socket.disconnect()
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         initLocationServices()
         onActionListener()
+        setupSocket()
         getUserProfile()
     }
 
@@ -75,6 +88,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //cancel
         }
     }
+
+    //region Rest Calls
 
     private fun changeStateOnServer(state: String) {
 
@@ -102,6 +117,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             Toast.makeText(this, "Profile not found", Toast.LENGTH_SHORT).show()
 
     }
+
+    //endregion
 
     //region User State
 
@@ -261,6 +278,60 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         if(requestCode == KeyConstants.REQUEST_lOCATION_PERMISSION && grantResults.isNotEmpty()) {
             mMap.isMyLocationEnabled = true
             checkForLocation()
+        }
+    }
+
+    //endregion
+
+    //region Sockets
+
+    private fun setupSocket() {
+        try {
+            socket = IO.socket("http://172.16.16.253:3000/")
+            socket.on(
+                Socket.EVENT_CONNECT
+            ) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "connected", Toast.LENGTH_SHORT).show()
+                }
+            }
+                .on(
+                    Socket.EVENT_DISCONNECT
+                ) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "disconnected",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                .on("ServerMessage") { args ->
+                    runOnUiThread {
+                        val obj = args[0] as JSONObject
+                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            socket.connect()
+
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun sendEventViaSocket() {
+        btnChangeStatus.setOnClickListener {
+            // Sending an object
+
+            try {
+                val obj = JSONObject()
+                obj.put("name", "server")
+                obj.put("email", "test")
+                socket.emit("available", obj)
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
         }
     }
 
