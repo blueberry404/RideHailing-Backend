@@ -12,11 +12,14 @@ import com.blueberry.consumerapp.R
 import com.blueberry.consumerapp.adapters.LocationSpinnerAdapter
 import com.blueberry.consumerapp.config.AppConfig
 import com.blueberry.consumerapp.constants.KeyConstants
+import com.blueberry.consumerapp.entities.BookingInput
 import com.blueberry.consumerapp.entities.Route
 import com.blueberry.consumerapp.entities.User
+import com.blueberry.consumerapp.rest.LocationService
 import com.blueberry.consumerapp.rest.ServiceManager
 import com.blueberry.consumerapp.rest.UserService
 import com.blueberry.consumerapp.utils.*
+import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -48,7 +51,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        populateSpinner()
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        populateUI()
         setActions()
         initLocationServices()
         getUserProfile()
@@ -67,12 +74,40 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         }
+
+        btnGo.setOnClickListener { onGoPressed() }
+    }
+
+    private fun onGoPressed() {
+        if(spinner.selectedItemPosition == 0)
+            Toast.makeText(this@MainActivity, R.string.txt_loc_validation, Toast.LENGTH_SHORT).show()
+        else
+            requestRide()
+    }
+
+    private fun requestRide() {
+        coroutineScope.launch {
+            try {
+                progressView.visibility = View.VISIBLE
+                val service = ServiceManager.getInstance().getService(LocationService::class.java) as LocationService
+                val response = service.requestRide(getBookingRequest())
+                if(!response.success) {
+                    
+                }
+                progressView.visibility = View.GONE
+            }
+            catch(ex: Exception) {
+                progressView.visibility = View.GONE
+                Toast.makeText(this@MainActivity, ex.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun getUserProfile() {
 
         coroutineScope.launch {
             try {
+                progressView.visibility = View.VISIBLE
                 val service = ServiceManager.getInstance().getService(UserService::class.java) as UserService
                 val response = service.getMyProfile()
                 val result = response.result
@@ -81,16 +116,28 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     txtStateVal.text = it.state
                     setUserState(it)
                 }?: setUserIdle()
+                progressView.visibility = View.GONE
             }
             catch(ex: Exception) {
+                progressView.visibility = View.GONE
                 Toast.makeText(this@MainActivity, ex.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun populateSpinner() {
+    private fun getBookingRequest(): BookingInput {
+        AppConfig.profile?.let {
+            val route = locationList[spinner.selectedItemPosition]
+            return BookingInput(it.userId, route.sourceCoords.latitude, route.sourceCoords.longitude, route.destCoords.latitude, route.destCoords.longitude)
+        }
+        return BookingInput()
+    }
+
+    private fun populateUI() {
         initLocations()
         spinner.adapter = LocationSpinnerAdapter(this, locationList)
+
+        progressView.setIndeterminateDrawable(DoubleBounce())
     }
 
     private fun initLocationServices() {
