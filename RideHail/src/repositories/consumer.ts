@@ -16,8 +16,9 @@ export const changeConsumerState = async (req: IConsumerStateChange) => {
         const user = await getRepository(Consumers).findOne(req.id);
         if(user) {
             user.state = req.state;
+            return save(user);
         }
-        return "User not found";
+        return user;
     }
     catch(error) {
         return error;

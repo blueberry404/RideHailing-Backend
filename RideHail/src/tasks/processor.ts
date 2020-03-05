@@ -1,6 +1,7 @@
 import { forEach } from 'p-iteration';
 import { isArray } from "util";
 import init from 'socket.io-emitter';
+import dotenv from 'dotenv';
 
 import { FIND_NEARBY_DRIVER_URL } from "./queues";
 import { findNearestDriver } from '../repositories/driver';
@@ -9,6 +10,7 @@ import { Ride } from "../entities/ride";
 import { getRedisConfig, getAsync } from "../redisClient";
 import { Drivers } from '../entities/drivers';
 
+dotenv.config();
 let processorInitializers: { [index: string]: ProcessCallbackFunction<any> } = {}
 
 processorInitializers[FIND_NEARBY_DRIVER_URL] = async (job: Job<Ride>, done: DoneCallback) => {
@@ -30,6 +32,7 @@ processorInitializers[FIND_NEARBY_DRIVER_URL] = async (job: Job<Ride>, done: Don
             }
             
         } catch (error) {
+            console.error(`processorInitializers: ${error}`);
             done(error);
         }
 };
@@ -56,6 +59,7 @@ const notificationFindDriversResult = async (ride: Ride ,err: Error | undefined,
                     io.to(data.socketID).emit({});
                 }
                 catch(error) {
+                    console.error(`notificationFindDriversResult: ${error}`);
                     //might be socket has been disconnected
                 }
             }

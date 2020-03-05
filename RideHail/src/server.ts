@@ -22,6 +22,8 @@ import { typeOrmConfig } from './config';
       await conn.close();
       console.log('PG connection closed.');
     });
+
+    process.on('unhandledRejection', (reason, _) => { throw reason; });
   
   }
   catch(ex) {
