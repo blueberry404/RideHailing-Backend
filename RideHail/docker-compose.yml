@@ -2,7 +2,8 @@ version: '3'
 services: 
     redis:
         container_name: 'redis'
-        image: redis:5.0.7
+        image: redis:latest
+        command: ["redis-server", "--bind", "redis", "--port", "6379"]
         ports: 
             - "6379:6379"
     app:
@@ -24,7 +25,8 @@ services:
             - ./.env
     worker:
         build: .
-        container_name: my-worker
+        container_name: queue-manager
+        command: "sh -c 'npm run worker'"
         env_file:
             - ./.env
         depends_on:

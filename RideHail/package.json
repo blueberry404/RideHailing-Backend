@@ -12,7 +12,7 @@
     "migrate:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
     "migrate:run": "ts-node ./node_modules/.bin/typeorm migration:run",
     "seed": "node build/tasks/dbseed.js",
-    "worker": "tsc && node build/worker.js"
+    "worker": "tsc && node build/tasks/worker.js"
   },
   "author": "Anum Amin",
   "license": "ISC",
