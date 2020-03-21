@@ -163,6 +163,11 @@ export const myProfile = async (request: Request, response: Response, next: Next
     }
 };
 
+export const delAllRides = async (_request: Request, response: Response) => {
+    const result = await rideService.removeAllRides();
+    response.send({ success: true, result});
+};
+
 /*
 Push notifications:
 - find and notify Nearby Drivers

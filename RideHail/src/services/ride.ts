@@ -1,5 +1,5 @@
 import { IBookingRequest } from "../interfaces/bookingRequest";
-import { createBooking, cancelBooking } from '../repositories/ride';
+import { createBooking, cancelBooking, deleteAllEntries } from '../repositories/ride';
 import { Ride } from "../entities/ride";
 import { IBookingCancelRequest } from "../interfaces/bookingCancelRequest";
 
@@ -19,4 +19,8 @@ export const cancelRide = async (req: IBookingCancelRequest) => {
     catch(error) {
         return error;
     }
+};
+
+export const removeAllRides = async () => {
+    return deleteAllEntries();
 };

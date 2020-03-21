@@ -14,9 +14,9 @@ export const client = Redis.createClient(getRedisConfig());
 client.on('connect', function (err) {
   console.log('Redis Connected');
 });
-
+  
 client.on('error', function (err) {
-  console.log(err);
+  console.log(`Redis err: ${err}`);
 });
 
 export const getAsync = promisify(client.get).bind(client);

@@ -15,3 +15,7 @@ export const cancelBooking = async (req: IBookingCancelRequest) => {
     }
     return 'Ride not found';
 };
+
+export const deleteAllEntries = async () => {
+    return getRepository(Ride).clear();
+};
