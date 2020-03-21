@@ -1,9 +1,11 @@
 package com.blueberry.consumerapp.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.IntentSender
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
@@ -39,6 +41,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
+import io.socket.client.IO
+import io.socket.client.Socket
+import java.net.URISyntaxException
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -47,10 +52,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private lateinit var locationList: MutableList<Route>
+    lateinit var socket: Socket
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        socket.disconnect()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -92,7 +103,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 val service = ServiceManager.getInstance().getService(LocationService::class.java) as LocationService
                 val response = service.requestRide(getBookingRequest())
                 if(!response.success) {
-                    
+                    Toast.makeText(this@MainActivity, response.toString(), Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    Toast.makeText(this@MainActivity, "Ride request has been sent", Toast.LENGTH_SHORT).show()
                 }
                 progressView.visibility = View.GONE
             }
@@ -115,6 +129,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     AppConfig.profile = it
                     txtStateVal.text = it.state
                     setUserState(it)
+                    setupSocket()
                 }?: setUserIdle()
                 progressView.visibility = View.GONE
             }
@@ -296,6 +311,60 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             mMap.isMyLocationEnabled = true
             checkForLocation()
         }
+    }
+
+    //endregion
+
+    //region Sockets
+
+    private fun setupSocket() {
+        try {
+            socket = IO.socket("http://192.168.1.102:3000/")
+            socket.on(
+                Socket.EVENT_CONNECT
+            ) {
+                runOnUiThread {
+                    val payload = JSONObject()
+                    payload.put("userID", AppConfig.profile?.userId)
+                    payload.put("type", "Consumer")
+                    sendMessageToServer("connectUser", payload)
+                    Toast.makeText(this@MainActivity, "connected", Toast.LENGTH_SHORT).show()
+                }
+            }
+                .on(
+                    Socket.EVENT_DISCONNECT
+                ) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "disconnected",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                .on("Ride Accepted") { args ->
+                    runOnUiThread {
+                        val obj = args[0] as JSONObject
+                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .on("No Ride Found") { args ->
+                    runOnUiThread {
+                        val obj = args[0] as JSONObject
+                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            socket.connect()
+
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun sendMessageToServer(event: String, payload: JSONObject = JSONObject()) {
+        socket.emit(event, payload)
     }
 
     //endregion

@@ -1,9 +1,11 @@
 package com.blueberry.driverapp.activities
 
 import android.Manifest
+import android.content.Intent
 import android.content.IntentSender
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -63,7 +65,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onPostCreate(savedInstanceState)
         initLocationServices()
         onActionListener()
-        setupSocket()
         getUserProfile()
     }
 
@@ -132,6 +133,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 result?.let {
                     AppConfig.profile = it
                     setUserState(it)
+                    setupSocket()
                 }?: setUserNotAvailable()
             }
             catch(ex: Exception) {
@@ -287,11 +289,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupSocket() {
         try {
-            socket = IO.socket("http://172.16.16.253:3000/")
+            socket = IO.socket("http://192.168.1.102:3000/")
             socket.on(
                 Socket.EVENT_CONNECT
             ) {
                 runOnUiThread {
+                    val payload = JSONObject()
+                    payload.put("userID", AppConfig.profile?.userId)
+                    payload.put("type", "Driver")
+                    sendMessageToServer("connectUser", payload)
                     Toast.makeText(this@MainActivity, "connected", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -306,10 +312,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         ).show()
                     }
                 }
-                .on("ServerMessage") { args ->
+                .on("Ride Request") { args ->
                     runOnUiThread {
-                        val obj = args[0] as JSONObject
-                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                        Log.e("TAG", args.toString())
+                        Toast.makeText(this@MainActivity, "New Ride Request Received", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@MainActivity, RideRequestActivity::class.java))
                     }
                 }
             socket.connect()
@@ -318,6 +325,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             e.printStackTrace()
         }
 
+    }
+
+    private fun sendMessageToServer(event: String, payload: JSONObject = JSONObject()) {
+        socket.emit(event, payload)
     }
 
     private fun sendEventViaSocket() {

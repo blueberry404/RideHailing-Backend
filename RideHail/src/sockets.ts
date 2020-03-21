@@ -14,13 +14,8 @@ class Sockets {
         this.io.on('connection', (socket: any) => {
 
             console.log('Connected client on port %s.', this.port);
-      
-            socket.on('available', (connectEvent: ISocketConnectEvent) => {
-              console.log(`Client available:::: ${JSON.stringify(connectEvent)}`);
-              socket.emit('ServerMessage', { message: "Hello World with Sockets and Love!" });
-            });
-      
-            socket.on('connect', async (connectEvent: ISocketConnectEvent) => {
+
+            socket.on('connectUser', async (connectEvent: ISocketConnectEvent) => {
               console.log(`Client connect:::: ${JSON.stringify(connectEvent)}`);
               //save socket info on redis for later use
               await this.onUserConnect(connectEvent, socket);
@@ -40,10 +35,11 @@ class Sockets {
   private async onUserConnect(connectEvent: ISocketConnectEvent, socket: any) {
     const payload = {
       userID: connectEvent.userID,
+      type: connectEvent.type,
       socketID: socket.id
     };
     console.log(`Payload on connect with ID... ${JSON.stringify(payload)}`);
-    await setAsync(connectEvent.userID.toString(), JSON.stringify(payload));
+    await setAsync(`${connectEvent.userID}-${connectEvent.type}`, JSON.stringify(payload));
   }
 
     onRideAcceptByDriver(payload: ISocketAcceptRide) {
@@ -62,6 +58,7 @@ class Sockets {
 
 interface ISocketConnectEvent {
     userID: number;
+    type: String;
 }
 
 interface ISocketAcceptRide {

@@ -20,7 +20,7 @@ processorInitializers[FIND_NEARBY_DRIVER_URL] = async (job: Job<Ride>, done: Don
         try {
             const drivers = await findNearestDriver(ride);
             if(isArray(drivers)) {
-                console.log(`list of drivers found:: ${drivers}`);
+                console.log(`list of drivers found:: ${JSON.stringify(drivers)}`);
                 notificationFindDriversResult(ride, undefined, drivers);
                 done(null, drivers);
             }
@@ -40,23 +40,27 @@ processorInitializers[FIND_NEARBY_DRIVER_URL] = async (job: Job<Ride>, done: Don
 const notificationFindDriversResult = async (ride: Ride ,err: Error | undefined, drivers: any | undefined) => {
     const io = init(getRedisConfig());
     if(drivers) {
+        console.log("::: inside drivers");
         forEach(drivers, async (driver: Drivers) => {
-            const dataStr = await getAsync(driver.id.toString());
+            console.log(`::: driver:: ${JSON.stringify(driver)}`);
+            const dataStr = await getAsync(`${driver.id}-Driver`);
+            console.log(`::: dataStr:: ${dataStr}`);
             if(dataStr) {
                 const data = JSON.parse(dataStr);
                 if(data.socketID) {
-                    io.to(data.socketID).emit(ride);
+                    console.log(`::: data.socketID:: ${data.socketID}`);
+                    io.to(data.socketID).emit('Ride Request', ride);
                 }
             }
         });
     }
     else {
-        const dataStr = await getAsync(ride.consumerId.toString());
+        const dataStr = await getAsync(`${ride.consumerId}-Consumer`);
         if(dataStr) {
             const data = JSON.parse(dataStr);
             if(data.socketID) {
                 try {
-                    io.to(data.socketID).emit({});
+                    io.to(data.socketID).emit('No Ride Found', {});
                 }
                 catch(error) {
                     console.error(`notificationFindDriversResult: ${error}`);
