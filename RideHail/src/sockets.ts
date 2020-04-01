@@ -1,27 +1,19 @@
 import SocketIO from 'socket.io';
-import Redis, { RedisAdapter } from 'socket.io-redis';
-import { setAsync, getRedisConfig } from './redisClient';
+import * as RedisManager from './redisClient';
 
 class Sockets {
   private io: SocketIO.Server;
   private port: number;
 
-  constructor(srv: any | undefined = undefined, port: number) {
+  constructor(srv: any, port: number) {
     this.port = port;
-    if (srv) {
-      this.io = SocketIO(srv);
-    }
-    else {
-      this.io = SocketIO(port);
-    }
-    const adapter: RedisAdapter = Redis(getRedisConfig());
-    this.io.adapter(adapter);
+    this.io = SocketIO(srv);
   }
 
   listenToSocket() {
     this.io.on('connection', (socket: any) => {
 
-      console.log('Connected client on port %s.', this.port);
+      console.log('Connected client', this.port);
 
       socket.on('connectUser', async (connectEvent: ISocketConnectEvent) => {
         console.log(`Client connect:::: ${JSON.stringify(connectEvent)}`);
@@ -55,17 +47,7 @@ class Sockets {
       socketID: socket.id
     };
     console.log(`Payload on connect with ID... ${JSON.stringify(payload)}`);
-    await setAsync(`${connectEvent.userID}-${connectEvent.type}`, JSON.stringify(payload));
-  }
-
-  sendNotification(socketID: string, eventName: string, payload: any) {
-    const socket = this.io.sockets.sockets[socketID];
-    if(socket) {
-      socket.emit(eventName, payload);
-    }
-    else {
-      console.log("socket not found :(");
-    }
+    await RedisManager.setAsync(`${connectEvent.userID}-${connectEvent.type}`, JSON.stringify(payload));
   }
 
   onRideAcceptByDriver(payload: ISocketAcceptRide) {
@@ -80,6 +62,22 @@ class Sockets {
 
   }
 
+  parseMessage(msg: any) {
+    if(msg) {
+      const data = JSON.parse(msg);
+      if(data.socketID) {
+        const socket = this.io.clients().sockets[data.socketID];
+        if(socket) {
+          socket.emit(RedisManager.EVENT_RIDE_REQUEST, data.payload);
+        }
+      }
+    }
+  }
+
+  subscribeToRedisEvents() {
+    RedisManager.messenger.consume(RedisManager.EVENT_RIDE_REQUEST).subscribe(msg => this.parseMessage(msg));
+    RedisManager.messenger.consume(RedisManager.EVENT_NO_DRIVER_FOUND).subscribe(msg => this.parseMessage(msg));
+  }
 }
 
 interface ISocketConnectEvent {

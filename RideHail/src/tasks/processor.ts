@@ -1,19 +1,19 @@
 import { forEach } from 'p-iteration';
 import { isArray } from "util";
+import { RedisClient } from 'redis';
 
 import { findNearestDriver } from '../repositories/driver';
 import { Job, DoneCallback } from "bull";
 import { Ride } from "../entities/ride";
 import { getAsync } from "../redisClient";
 import { Drivers } from '../entities/drivers';
-import Sockets from '../sockets';
-
+import * as RedisManager from '../redisClient';
 
 class Processor {
-    socket: Sockets;
+    client: RedisClient
 
-    constructor(socket: Sockets) {
-        this.socket = socket;
+    constructor(redisClient: RedisClient) {
+        this.client = redisClient;
         this.findDriver = this.findDriver.bind(this);
         this.notificationFindDriversResult = this.notificationFindDriversResult.bind(this);
     }
@@ -45,16 +45,13 @@ class Processor {
     private async notificationFindDriversResult(ride: Ride, err: Error | undefined, drivers: any | undefined) {
         
         if (drivers) {
-            console.log("::: inside drivers");
             forEach(drivers, async (driver: Drivers) => {
-                console.log(`::: driver:: ${JSON.stringify(driver)}`);
                 const dataStr = await getAsync(`${driver.id}-Driver`);
-                console.log(`::: dataStr:: ${dataStr}`);
                 if (dataStr) {
                     const data = JSON.parse(dataStr);
                     if (data.socketID) {
-                        console.log(`::: data.socketID:: ${data.socketID}`);
-                        this.socket.sendNotification(data.socketID, 'Ride Request', ride);
+                        const payload = {socketID: data.socketID, payload: ride};
+                        RedisManager.messenger.publish(RedisManager.EVENT_RIDE_REQUEST, JSON.stringify(payload));
                     }
                 }
             });
@@ -65,7 +62,7 @@ class Processor {
                 const data = JSON.parse(dataStr);
                 if (data.socketID) {
                     try {
-                        this.socket.sendNotification(data.socketID, 'No Ride Found', {});
+                        RedisManager.messenger.publish(RedisManager.EVENT_NO_DRIVER_FOUND, JSON.stringify({}));
                     }
                     catch (error) {
                         console.error(`notificationFindDriversResult: ${error}`);

@@ -101,10 +101,6 @@
 						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
-				},
 				"url": {
 					"raw": "http://localhost:3000/users/consumers",
 					"protocol": "http",
@@ -188,10 +184,6 @@
 						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
-				},
 				"url": {
 					"raw": "http://localhost:3000/users/drivers",
 					"protocol": "http",
@@ -219,7 +211,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"firstname\" : \"Quint\",\n\t\"lastname\": \"Danke\",\n\t\"email\": \"quint.danke@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}"
+					"raw": "{\n\t\"firstname\" : \"Monica\",\n\t\"lastname\": \"Chandler\",\n\t\"email\": \"monica.chandler@gmail.com\",\n\t\"mobile\": \"+123 456 789\",\n\t\"password\": \"123456\"\n}",
+					"options": {
+						"raw": {}
+					}
 				},
 				"url": {
 					"raw": "http://localhost:3000/users/consumer/create",
@@ -238,7 +233,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/users/bookRide",
+			"name": "Book Ride",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -249,17 +244,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"userId\": 6,\n\t\"sourceLat\": 24.906787,\n\t\"sourceLong\": 67.064565,\n\t\"destLat\": 24.881009,\n\t\"destLong\": 67.037137\n}"
+					"raw": "{\n\t\"userId\": 1,\n\t\"sourceLat\": 24.906787,\n\t\"sourceLong\": 67.064565,\n\t\"destLat\": 24.881009,\n\t\"destLong\": 67.037137\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3000/users/bookRide",
+					"raw": "http://localhost:3000/bookRide",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"users",
 						"bookRide"
 					]
 				}
@@ -289,6 +283,102 @@
 					"port": "3000",
 					"path": [
 						"cancelRide"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consumer My Profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/consumer/myProfile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"consumer",
+						"myProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Driver My Profile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/consumer/myProfile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"consumer",
+						"myProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Driver Update Status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 1,\n\t\"state\": \"IDLE\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/driver/updateStatus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"driver",
+						"updateStatus"
 					]
 				}
 			},

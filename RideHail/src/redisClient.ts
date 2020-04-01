@@ -1,6 +1,7 @@
 import * as Redis from 'redis';
 import { promisify } from 'util';
 import { RedisConfigSignature } from './interfaces/RedisConfigSignature';
+import {PubsubManager} from 'redis-messaging-manager';
 
 export function getRedisConfig() : RedisConfigSignature {
     return {
@@ -18,6 +19,12 @@ client.on('connect', function (err) {
 client.on('error', function (err) {
   console.log(`Redis err: ${err}`);
 });
+
+export const messenger = new PubsubManager(getRedisConfig());
+
+export const EVENT_RIDE_REQUEST = "EVENT_RIDE_REQUEST";
+export const EVENT_NO_DRIVER_FOUND = "EVENT_NO_DRIVER_FOUND";
+
 
 export const getAsync = promisify(client.get).bind(client);
 export const setAsync = promisify(client.set).bind(client);

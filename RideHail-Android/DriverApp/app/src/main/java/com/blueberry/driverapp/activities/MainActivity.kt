@@ -312,7 +312,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         ).show()
                     }
                 }
-                .on("Ride Request") { args ->
+                .on("EVENT_RIDE_REQUEST") { args ->
                     runOnUiThread {
                         Log.e("TAG", args.toString())
                         Toast.makeText(this@MainActivity, "New Ride Request Received", Toast.LENGTH_SHORT).show()

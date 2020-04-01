@@ -74,6 +74,7 @@ class App {
 
     //socket events
     this.sockets.listenToSocket();
+    this.sockets.subscribeToRedisEvents();
   }
 
   private listenToServer() {

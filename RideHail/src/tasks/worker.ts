@@ -4,18 +4,13 @@ import dotenv from 'dotenv';
 import { queues } from './queues';
 import Processor from './processor';
 import { typeOrmConfig } from '../config';
-import Sockets from '../sockets';
+import { client } from '../redisClient';
 
 (async () => {
 
   dotenv.config();
 
   try {
-
-    //It won't work, now I know!
-    const sockets = new Sockets(undefined, 4000);
-    sockets.listenToSocket();
-
     const conn = await createConnection(typeOrmConfig);
 
     process.on('exit', async () => {
@@ -23,7 +18,7 @@ import Sockets from '../sockets';
       console.log('Worker:::: PG connection closed in queue manager');
     });
 
-    const processor: Processor = new Processor(sockets);
+    const processor: Processor = new Processor(client);
 
     Object.entries(queues).forEach(([queueName, queue]) => {
       console.log(`Worker listening to '${queueName}' queue`);
