@@ -11,7 +11,7 @@ import { IBookingCancelRequest } from '../interfaces/bookingCancelRequest';
 import { ConsumerState } from '../enums/ConsumerState';
 import { DriverState } from '../enums/DriverState';
 import Auth from '../utils/Auth';
-import { IUserJWtData } from '../interfaces/user';
+import { IUserJWtData, IProfileRequest } from '../interfaces/user';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
@@ -118,7 +118,7 @@ export const cancelRide = async (request: Request, response: Response, next: Nex
     
 };
 
-export const acceptRide = async (request: Request, response: Response) => {
+export const acceptRide = async (request: Request, response: Response, next: NextFunction) => {
     response.json({ success: 'success' });
 };
 
@@ -166,6 +166,42 @@ export const myProfile = async (request: Request, response: Response, next: Next
 export const delAllRides = async (_request: Request, response: Response) => {
     const result = await rideService.removeAllRides();
     response.send({ success: true, result});
+};
+
+export const getConsumerProfile = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.params as unknown as IProfileRequest;
+    const profile = await consumerService.getConsumerProfile(+req.id);
+    if(profile instanceof Consumers) {
+        response.send({ success: true, result: {
+            id: profile.id,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+            mobile: profile.mobile,
+            profileImageURL: profile.profileImageURL
+        } });
+    }
+    else {
+        next(new HTTPException(404, "User not found"));
+    }
+};
+
+export const getDriverProfile = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.params as unknown as IProfileRequest;
+    const profile = await driverService.getDriverProfile(+req.id);
+    if(profile instanceof Drivers) {
+        response.send({ success: true, result: {
+            id: profile.id,
+            firstName: profile.firstName,
+            lastName: profile.lastName,
+            email: profile.email,
+            mobile: profile.mobile,
+            profileImageURL: profile.profileImageURL
+        } });
+    }
+    else {
+        next(new HTTPException(404, "User not found"));
+    }
 };
 
 /*

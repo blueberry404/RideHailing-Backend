@@ -55,13 +55,16 @@ class App {
     this.app.get('/users/consumers', users.getAllConsumers);
     this.app.get('/users/drivers', users.getAllDrivers);
     this.app.post('/users/consumer/create', users.createConsumer);
+    this.app.get('/users/consumer/:id', users.getConsumerProfile);
     this.app.post('/users/driver/create', users.createDriver);
     this.app.post('/users/driver/updateStatus', users.changeDriverStatus);
     this.app.post('/users/driver/updateLocation', users.updateDriverLocation);
+    this.app.get('/users/driver/:id', users.getDriverProfile);
     this.app.post('/bookRide', users.bookRide);
     this.app.post('/cancelRide', users.cancelRide);
     this.app.get('/myProfile', users.myProfile);
     this.app.get('/clearRides', users.delAllRides);
+    this.app.post('/acceptRide', users.acceptRide);
   }
 
   private handleErrors() {

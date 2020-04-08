@@ -3,6 +3,8 @@ package com.blueberry.consumerapp.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.os.Bundle
+import android.os.Parcel
 import android.util.DisplayMetrics
 import java.io.IOException
 
@@ -42,5 +44,18 @@ object Utils {
 
     fun convertPixelsToDp(px: Float): Float {
         return px / (Resources.getSystem().displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun readParcelableForLocation(parcel: Parcel): Map<String, Double> {
+        val bundle = parcel.readBundle()
+        return bundle?.getSerializable("map") as Map<String, Double>
+    }
+
+    fun writeLocationToParcel(map: HashMap<String, Double>?): Bundle {
+        val bundle = Bundle()
+        map?.let {
+            bundle.putSerializable("map", it)
+        }
+        return bundle
     }
 }

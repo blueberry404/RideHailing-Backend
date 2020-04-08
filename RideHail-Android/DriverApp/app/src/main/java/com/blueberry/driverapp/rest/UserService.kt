@@ -4,6 +4,7 @@ import com.blueberry.consumerapp.entities.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface UserService {
 
@@ -15,4 +16,7 @@ interface UserService {
 
     @POST("users/driver/updateStatus")
     suspend fun changeStatus(@Body stateChangeInput: StateChangeInput): MessageResponse
+
+    @GET("users/consumer/{id}")
+    suspend fun getConsumerProfile(@Path("id") userID: Int) : ProfileResponse
 }

@@ -5,3 +5,9 @@ export interface IBookingRequest {
     destLat: number,
     destLong: number
 }
+
+export interface IRideAcceptRequest {
+    rideId: number,
+    consumerId: number,
+    driverId: number
+}

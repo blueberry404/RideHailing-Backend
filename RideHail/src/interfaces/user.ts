@@ -26,3 +26,7 @@ export interface IUserJWtData {
     lastName: string;
     type: string;
 }
+
+export interface IProfileRequest {
+    id: string;
+}

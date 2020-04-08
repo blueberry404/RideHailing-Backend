@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.blueberry.consumerapp.BuildConfig
 import com.blueberry.consumerapp.R
 import com.blueberry.consumerapp.adapters.LocationSpinnerAdapter
 import com.blueberry.consumerapp.config.AppConfig
@@ -319,7 +320,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupSocket() {
         try {
-            socket = IO.socket("http://192.168.1.102:3000/")
+            socket = IO.socket(BuildConfig.baseURL)
             socket.on(
                 Socket.EVENT_CONNECT
             ) {

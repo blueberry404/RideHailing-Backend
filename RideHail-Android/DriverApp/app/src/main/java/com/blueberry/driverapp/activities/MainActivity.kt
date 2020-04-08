@@ -20,7 +20,9 @@ import com.blueberry.consumerapp.utils.isGpsEnabled
 import com.blueberry.consumerapp.utils.isLocationEnabled
 import com.blueberry.consumerapp.utils.showLocationEnableSetting
 import com.blueberry.consumerapp.utils.showToast
+import com.blueberry.driverapp.BuildConfig
 import com.blueberry.driverapp.R
+import com.blueberry.driverapp.entities.Ride
 import com.blueberry.driverapp.utils.PermissionUtils
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -289,7 +291,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupSocket() {
         try {
-            socket = IO.socket("http://192.168.1.102:3000/")
+            socket = IO.socket(BuildConfig.baseURL)
             socket.on(
                 Socket.EVENT_CONNECT
             ) {
@@ -314,9 +316,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 .on("EVENT_RIDE_REQUEST") { args ->
                     runOnUiThread {
-                        Log.e("TAG", args.toString())
-                        Toast.makeText(this@MainActivity, "New Ride Request Received", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@MainActivity, RideRequestActivity::class.java))
+                        if(args.isNotEmpty()) {
+                            val bookingObj = (args[0] as JSONObject).getJSONObject("booking")
+                            val ride = Ride()
+                            ride.populateData(bookingObj)
+                            Toast.makeText(this@MainActivity, "New Ride Request Received", Toast.LENGTH_SHORT).show()
+                            val mIntent = Intent(this@MainActivity, RideRequestActivity::class.java)
+                            mIntent.putExtra("ride", ride)
+                            startActivity(mIntent)
+                        }
+
                     }
                 }
             socket.connect()

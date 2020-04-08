@@ -1,6 +1,7 @@
 package com.blueberry.consumerapp.rest
 
 import android.content.SharedPreferences
+import com.blueberry.consumerapp.BuildConfig
 import com.blueberry.consumerapp.RideApplication
 import com.blueberry.consumerapp.constants.KeyConstants
 import com.blueberry.consumerapp.utils.Utils
@@ -18,7 +19,7 @@ class ServiceInterceptor : RestClientInterceptor {
 
     override fun getWriteTimeout(): Long = 10
 
-    override fun getBaseURL(): String = "http://172.16.16.253:3000" //"http://10.0.2.2:3000"
+    override fun getBaseURL(): String = BuildConfig.baseURL //"http://10.0.2.2:3000"
 
     override fun intercept(chain: Interceptor.Chain?): Response {
 

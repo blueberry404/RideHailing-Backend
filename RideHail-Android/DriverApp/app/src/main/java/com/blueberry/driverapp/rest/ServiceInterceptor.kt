@@ -2,6 +2,7 @@ package com.blueberry.consumerapp.rest
 
 import com.blueberry.consumerapp.constants.KeyConstants
 import com.blueberry.consumerapp.utils.Utils
+import com.blueberry.driverapp.BuildConfig
 import com.blueberry.driverapp.RideApplication
 import okhttp3.Interceptor
 import okhttp3.Protocol
@@ -17,7 +18,7 @@ class ServiceInterceptor : RestClientInterceptor {
 
     override fun getWriteTimeout(): Long = 10
 
-    override fun getBaseURL(): String = "http://172.16.16.253:3000" //"http://10.0.2.2:3000"
+    override fun getBaseURL(): String = BuildConfig.baseURL
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
