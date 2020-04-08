@@ -21,22 +21,9 @@ class Sockets {
         await this.onUserConnect(connectEvent, socket);
       });
 
-      socket.on('rideAccepted', async (payload: ISocketAcceptRide) => {
-        console.log(`Payload on rideAccepted... ${JSON.stringify(payload)}`);
-        this.onRideAcceptByDriver(payload);
-      });
-
       socket.on('disconnect', () => {
         console.log('Client disconnected');
       });
-
-      socket.on('Ride Request', async (payload: any) => {
-        console.log(`:::Test Req SOCKETS received with payload ${JSON.stringify(payload)}`);
-      });
-    });
-
-    this.io.on('Ride Request', async (payload: any) => {
-      console.log(`:::Test Req IO received with payload ${JSON.stringify(payload)}`);
     });
   }
 
@@ -50,45 +37,31 @@ class Sockets {
     await RedisManager.setAsync(`${connectEvent.userID}-${connectEvent.type}`, JSON.stringify(payload));
   }
 
-  onRideAcceptByDriver(payload: ISocketAcceptRide) {
-
-  }
-
-  notifyDriverRideAlreadyBooked() {
-
-  }
-
-  notifyConsumerAboutRideAccepted() {
-
-  }
-
-  parseMessage(msg: any) {
+  parseMessage(msg: any, eventName: string) {
     if(msg) {
       const data = JSON.parse(msg);
       if(data.socketID) {
         const socket = this.io.clients().sockets[data.socketID];
         if(socket) {
-          socket.emit(RedisManager.EVENT_RIDE_REQUEST, data.payload);
+          socket.emit(eventName, data.payload);
         }
       }
     }
   }
 
   subscribeToRedisEvents() {
-    RedisManager.messenger.consume(RedisManager.EVENT_RIDE_REQUEST).subscribe(msg => this.parseMessage(msg));
-    RedisManager.messenger.consume(RedisManager.EVENT_NO_DRIVER_FOUND).subscribe(msg => this.parseMessage(msg));
+    RedisManager.messenger.consume(RedisManager.EVENT_RIDE_REQUEST)
+    .subscribe(msg => this.parseMessage(msg, RedisManager.EVENT_RIDE_REQUEST));
+    RedisManager.messenger.consume(RedisManager.EVENT_NO_DRIVER_FOUND)
+    .subscribe(msg => this.parseMessage(msg, RedisManager.EVENT_NO_DRIVER_FOUND));
+    RedisManager.messenger.consume(RedisManager.EVENT_DRIVER_ACCEPTED_RIDE)
+    .subscribe(msg => this.parseMessage(msg, RedisManager.EVENT_DRIVER_ACCEPTED_RIDE));
   }
 }
 
 interface ISocketConnectEvent {
   userID: number;
   type: String;
-}
-
-interface ISocketAcceptRide {
-  consumerId: number;
-  rideId: number;
-  driverId: number;
 }
 
 export default Sockets;

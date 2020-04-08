@@ -24,6 +24,7 @@ export const messenger = new PubsubManager(getRedisConfig());
 
 export const EVENT_RIDE_REQUEST = "EVENT_RIDE_REQUEST";
 export const EVENT_NO_DRIVER_FOUND = "EVENT_NO_DRIVER_FOUND";
+export const EVENT_DRIVER_ACCEPTED_RIDE = "EVENT_DRIVER_ACCEPTED_RIDE"
 
 
 export const getAsync = promisify(client.get).bind(client);

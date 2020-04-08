@@ -1,7 +1,7 @@
 import { createConnection } from 'typeorm';
 import dotenv from 'dotenv';
 
-import { queues } from './queues';
+import { queues, FIND_NEARBY_DRIVER_URL, NOTIFY_CONSUMER_RIDE_ACCEPTED } from './queues';
 import Processor from './processor';
 import { typeOrmConfig } from '../config';
 import { client } from '../redisClient';
@@ -21,8 +21,21 @@ import { client } from '../redisClient';
     const processor: Processor = new Processor(client);
 
     Object.entries(queues).forEach(([queueName, queue]) => {
+     
       console.log(`Worker listening to '${queueName}' queue`);
-      queue.process(processor.findDriver);
+
+      switch (queueName) {
+        case FIND_NEARBY_DRIVER_URL:
+          queue.process(processor.findDriver);
+          break;
+
+        case NOTIFY_CONSUMER_RIDE_ACCEPTED:
+          queue.process(processor.notifyClientAboutRideAcceptanceByDriver);
+          break;
+      
+        default:
+          break;
+      }
     });
 
   }

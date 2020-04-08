@@ -8,6 +8,7 @@ import { Ride } from "../entities/ride";
 import { getAsync } from "../redisClient";
 import { Drivers } from '../entities/drivers';
 import * as RedisManager from '../redisClient';
+import { IRideAcceptRequest } from '../interfaces/bookingRequest';
 
 class Processor {
     client: RedisClient
@@ -69,6 +70,18 @@ class Processor {
                         //might be socket has been disconnected
                     }
                 }
+            }
+        }
+    }
+
+    async notifyClientAboutRideAcceptanceByDriver(job: Job<IRideAcceptRequest>, done: DoneCallback) {
+        const request = job.data;
+        const dataStr = await getAsync(`${request.consumerId}-Consumer`);
+        if (dataStr) {
+            const data = JSON.parse(dataStr);
+            if (data.socketID) {
+                const payload = { socketID: data.socketID, payload: "" };
+                RedisManager.messenger.publish(RedisManager.EVENT_RIDE_REQUEST, JSON.stringify(payload));
             }
         }
     }

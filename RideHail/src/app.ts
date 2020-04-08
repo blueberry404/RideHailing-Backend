@@ -64,7 +64,7 @@ class App {
     this.app.post('/cancelRide', users.cancelRide);
     this.app.get('/myProfile', users.myProfile);
     this.app.get('/clearRides', users.delAllRides);
-    this.app.post('/acceptRide', users.acceptRide);
+    this.app.post('/acceptRide', users.acceptRideByDriver);
   }
 
   private handleErrors() {

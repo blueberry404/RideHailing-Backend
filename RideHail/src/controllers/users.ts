@@ -6,12 +6,14 @@ import { Consumers } from '../entities/consumers';
 import { Drivers } from '../entities/drivers';
 import HTTPException from '../exceptions/HttpException';
 import { Ride } from '../entities/ride';
-import { queues, FIND_NEARBY_DRIVER_URL } from '../tasks/queues';
+import { queues, FIND_NEARBY_DRIVER_URL, NOTIFY_CONSUMER_RIDE_ACCEPTED } from '../tasks/queues';
 import { IBookingCancelRequest } from '../interfaces/bookingCancelRequest';
 import { ConsumerState } from '../enums/ConsumerState';
 import { DriverState } from '../enums/DriverState';
 import Auth from '../utils/Auth';
 import { IUserJWtData, IProfileRequest } from '../interfaces/user';
+import { IRideAcceptRequest } from '../interfaces/bookingRequest';
+import Sockets from '../sockets';
 
 export const getAllConsumers = async (_request: Request, response: Response) => {
     const users = await consumerService.getAll();
@@ -118,8 +120,24 @@ export const cancelRide = async (request: Request, response: Response, next: Nex
     
 };
 
-export const acceptRide = async (request: Request, response: Response, next: NextFunction) => {
-    response.json({ success: 'success' });
+export const acceptRideByDriver = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.body as IRideAcceptRequest;
+    const result = await rideService.acceptRide(req);
+    if(result instanceof Ride) {
+        driverService.changeDriverStatus({
+            id: req.driverId,
+            state: DriverState.BUSY
+        });
+        consumerService.changeConsumerState({
+            id: req.consumerId,
+            state: ConsumerState.WAIT_FOR_RIDE
+        });
+        queues[NOTIFY_CONSUMER_RIDE_ACCEPTED].add(req);
+        response.send({ success: true, result });
+    }
+    else {
+        next(new HTTPException(400, result));
+    }
 };
 
 export const startRide = async (request: Request, response: Response) => {
@@ -203,6 +221,7 @@ export const getDriverProfile = async (request: Request, response: Response, nex
         next(new HTTPException(404, "User not found"));
     }
 };
+
 
 /*
 Push notifications:

@@ -343,16 +343,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         ).show()
                     }
                 }
-                .on("Ride Accepted") { args ->
+                .on("EVENT_DRIVER_ACCEPTED_RIDE") { _ ->
                     runOnUiThread {
-                        val obj = args[0] as JSONObject
-                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "You got a ride!!", Toast.LENGTH_SHORT).show()
                     }
                 }
-                .on("No Ride Found") { args ->
+                .on("EVENT_NO_DRIVER_FOUND") { _ ->
                     runOnUiThread {
-                        val obj = args[0] as JSONObject
-                        Toast.makeText(this@MainActivity, obj.toString(), Toast.LENGTH_SHORT).show()
+                        progressView.visibility = View.GONE
+                        Toast.makeText(this@MainActivity, "No driver found", Toast.LENGTH_SHORT).show()
                     }
                 }
 
