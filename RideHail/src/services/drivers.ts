@@ -1,11 +1,12 @@
 import * as repo from '../repositories/driver';
 import { IDriver } from '../interfaces/user';
 import { IDriverLocationUpdate } from '../interfaces/driverRequest';
-import { validateSignUp, validateDriverStatusChange, validateDriverLocationUpdate } from '../validations/user';
+import { validateRequest } from '../validations/user';
 import { Drivers } from '../entities/drivers';
 import Auth from '../utils/Auth';
-import { IBookingRequest } from '../interfaces/bookingRequest';
 import { IDriverStateChange } from '../interfaces/stateChange';
+import { CreateUserSchema } from '../schemas/UserSchema';
+import { DriverStatusUpdateSchema, DriverLocationUpdateSchema } from '../schemas/DriverSchema';
 
 export const getAll = async () => {
     return repo.getAll();
@@ -13,7 +14,7 @@ export const getAll = async () => {
 
 export const saveDriver = async (driverReq: IDriver) => {
 
-    const error = validateSignUp(driverReq);
+    const error = validateRequest(driverReq, CreateUserSchema);
     if(error) {
         return error;
     }
@@ -36,7 +37,7 @@ export const saveDriver = async (driverReq: IDriver) => {
 };
 
 export const changeDriverStatus = async (req: IDriverStateChange) => {
-    const error = validateDriverStatusChange(req);
+    const error = validateRequest(req, DriverStatusUpdateSchema);
     if(error) {
         return error;
     }
@@ -51,7 +52,7 @@ export const changeDriverStatus = async (req: IDriverStateChange) => {
 };
 
 export const updateDriverLocation = async (req: IDriverLocationUpdate) => {
-    const error = validateDriverLocationUpdate(req);
+    const error = validateRequest(req, DriverLocationUpdateSchema);
     if(error) {
         return error;
     }

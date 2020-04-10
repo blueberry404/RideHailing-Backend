@@ -19,4 +19,7 @@ interface UserService {
 
     @GET("users/consumer/{id}")
     suspend fun getConsumerProfile(@Path("id") userID: Int) : ProfileResponse
+
+    @POST("acceptRide")
+    suspend fun acceptRide(@Body acceptRideInput: AcceptRideInput) : AcceptRideResponse
 }

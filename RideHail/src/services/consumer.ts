@@ -2,10 +2,12 @@ import Joi from '@hapi/joi';
 
 import * as repo from '../repositories/consumer';
 import { IConsumer } from '../interfaces/user';
-import { validateSignUp } from '../validations/user';
+import { validateRequest } from '../validations/user';
 import { Consumers } from '../entities/consumers';
 import Auth from '../utils/Auth';
 import { IConsumerStateChange } from '../interfaces/stateChange';
+import { CreateUserSchema } from '../schemas/UserSchema';
+import { ConsumerStatusUpdateSchema } from '../schemas/ConsumerSchema';
 
 export const getAll = async () => {
     return repo.getAll();
@@ -13,7 +15,7 @@ export const getAll = async () => {
 
 export const saveConsumer = async (consumerReq: IConsumer) => {
 
-    const error = validateSignUp(consumerReq);
+    const error = validateRequest(consumerReq, CreateUserSchema);
     if(error) {
         return error;
     }
@@ -40,6 +42,10 @@ export const saveConsumer = async (consumerReq: IConsumer) => {
 };
 
 export const changeConsumerState = async (req: IConsumerStateChange) => {
+    const error = validateRequest(req, ConsumerStatusUpdateSchema);
+    if(error) {
+        return error;
+    }
     return repo.changeConsumerState(req);
 };
 

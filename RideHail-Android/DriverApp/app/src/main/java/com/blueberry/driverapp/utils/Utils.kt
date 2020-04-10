@@ -1,11 +1,13 @@
 package com.blueberry.consumerapp.utils
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Parcel
 import android.util.DisplayMetrics
+import androidx.appcompat.app.AlertDialog
 import java.io.IOException
 
 object Utils {
@@ -57,5 +59,15 @@ object Utils {
             bundle.putSerializable("map", it)
         }
         return bundle
+    }
+
+    fun showAlertDialog(context: Context, title: String, message: String, buttonTitle: String, onDismissListener: DialogInterface.OnClickListener?) {
+
+       AlertDialog.Builder(context).run {
+            setTitle(title)
+            setMessage(message)
+            setNeutralButton(buttonTitle, onDismissListener)
+            show()
+        }
     }
 }

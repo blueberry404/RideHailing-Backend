@@ -7,7 +7,7 @@ import org.json.JSONObject
 
 class Ride constructor(
 
-    var id: Int? = 0,
+    var id: Int = 0,
     var bookingDate: String? = null,
     var startRideTime: String? = null,
     var endRideTime: String? = null,
@@ -21,7 +21,7 @@ class Ride constructor(
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -35,7 +35,7 @@ class Ride constructor(
     )
 
     override fun writeToParcel(p0: Parcel?, p1: Int) {
-        p0?.writeValue(id)
+        p0?.writeInt(id)
         p0?.writeString(bookingDate)
         p0?.writeString(startRideTime)
         p0?.writeString(endRideTime)

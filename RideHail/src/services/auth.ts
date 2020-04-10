@@ -1,10 +1,11 @@
 import { ILoginRequest } from "../interfaces/loginRequest";
-import { validateLogin } from "../validations/user";
+import { validateRequest } from "../validations/user";
 import * as consumerRepo from '../repositories/consumer';
 import * as driverRepo from '../repositories/driver';
+import { LoginSchema } from "../schemas/UserSchema";
 
 export const checkIfUserExists = async (req: ILoginRequest) => {
-    const error = validateLogin(req);
+    const error = validateRequest(req, LoginSchema);
     if(error)
         return error;
     if(req.type == 'Consumer') {

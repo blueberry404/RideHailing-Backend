@@ -1,6 +1,7 @@
 package com.blueberry.consumerapp.activities
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.location.Location
@@ -343,12 +344,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         ).show()
                     }
                 }
-                .on("EVENT_DRIVER_ACCEPTED_RIDE") { _ ->
+                .on("EVENT_DRIVER_ACCEPTED_RIDE") {
                     runOnUiThread {
-                        Toast.makeText(this@MainActivity, "You got a ride!!", Toast.LENGTH_SHORT).show()
+                        Utils.showAlertDialog(this@MainActivity,
+                            "",
+                            "You got a driver! He's on the way",
+                            "OK",
+                            DialogInterface.OnClickListener { _,_ ->
+                                getUserProfile()
+                            })
                     }
                 }
-                .on("EVENT_NO_DRIVER_FOUND") { _ ->
+                .on("EVENT_NO_DRIVER_FOUND") {
                     runOnUiThread {
                         progressView.visibility = View.GONE
                         Toast.makeText(this@MainActivity, "No driver found", Toast.LENGTH_SHORT).show()

@@ -1,9 +1,11 @@
 package com.blueberry.consumerapp.utils
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.util.DisplayMetrics
+import androidx.appcompat.app.AlertDialog
 import java.io.IOException
 
 object Utils {
@@ -42,5 +44,15 @@ object Utils {
 
     fun convertPixelsToDp(px: Float): Float {
         return px / (Resources.getSystem().displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun showAlertDialog(context: Context, title: String, message: String, buttonTitle: String, onDismissListener: DialogInterface.OnClickListener?) {
+
+        AlertDialog.Builder(context).run {
+            setTitle(title)
+            setMessage(message)
+            setNeutralButton(buttonTitle, onDismissListener)
+            show()
+        }
     }
 }

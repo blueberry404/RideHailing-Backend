@@ -76,14 +76,25 @@ class Processor {
 
     async notifyClientAboutRideAcceptanceByDriver(job: Job<IRideAcceptRequest>, done: DoneCallback) {
         const request = job.data;
+        console.log("******** notifyClientAboutRideAcceptanceByDriver");
+        console.log(JSON.stringify(request));
         const dataStr = await getAsync(`${request.consumerId}-Consumer`);
         if (dataStr) {
+            console.log("DATA STR found");
             const data = JSON.parse(dataStr);
             if (data.socketID) {
+                console.log("SOCKET ID found");
                 const payload = { socketID: data.socketID, payload: "" };
-                RedisManager.messenger.publish(RedisManager.EVENT_RIDE_REQUEST, JSON.stringify(payload));
+                RedisManager.messenger.publish(RedisManager.EVENT_DRIVER_ACCEPTED_RIDE, JSON.stringify(payload));
+            }
+            else {
+                console.log("SOCKET ID NOt found");
             }
         }
+        else {
+            console.log("**** NO DATASTR FOUND");
+        }
+        done()
     }
 }
 

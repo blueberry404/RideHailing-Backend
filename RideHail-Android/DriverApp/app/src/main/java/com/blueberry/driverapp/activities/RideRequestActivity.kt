@@ -1,11 +1,14 @@
 package com.blueberry.driverapp.activities
 
+import android.content.DialogInterface
 import android.location.Address
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.blueberry.consumerapp.config.AppConfig
+import com.blueberry.consumerapp.entities.AcceptRideInput
 import com.blueberry.consumerapp.rest.ServiceManager
 import com.blueberry.consumerapp.rest.UserService
 import com.blueberry.consumerapp.utils.Utils
@@ -16,7 +19,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_ride_request.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +65,7 @@ class RideRequestActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
-
+        ride?.let { showLocationsOnMap(it) }
     }
 
     private fun populateData() {
@@ -85,27 +91,8 @@ class RideRequestActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getConsumerProfile() {
-        coroutineScope.launch {
-            try {
-                val service =
-                    ServiceManager.getInstance().getService(UserService::class.java) as UserService
-                val response = service.getConsumerProfile(ride!!.consumerId)
-                if(response.success) {
-                    val profile = response.result
-                    profile?.let {
-                        runOnUiThread { txtRider.text = "${it.getName()}" }
-                    }
-                }
-            }
-            catch(ex: Exception) {
-                Toast.makeText(this@RideRequestActivity, ex.message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun setActionListeners() {
-        btnAccept.setOnClickListener {  }
+        btnAccept.setOnClickListener { acceptRide() }
         btnReject.setOnClickListener { finish() }
     }
 
@@ -129,5 +116,60 @@ class RideRequestActivity : AppCompatActivity(), OnMapReadyCallback {
             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
         mMap?.addMarker(marker)
         return marker
+    }
+
+    private fun getRideAcceptInput(): AcceptRideInput {
+
+        val driverID = AppConfig.profile?.let { it.userId }?: 0
+        return AcceptRideInput(ride!!.id, ride!!.consumerId, driverID)
+    }
+
+    private fun getConsumerProfile() {
+        coroutineScope.launch {
+            try {
+                val service =
+                    ServiceManager.getInstance().getService(UserService::class.java) as UserService
+                val response = service.getConsumerProfile(ride!!.consumerId)
+                if(response.success) {
+                    val profile = response.result
+                    profile?.let {
+                        runOnUiThread { txtRider.text = "${it.getName()}" }
+                    }
+                }
+            }
+            catch(ex: Exception) {
+                Toast.makeText(this@RideRequestActivity, ex.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun acceptRide() {
+        coroutineScope.launch {
+            try {
+                val service =
+                    ServiceManager.getInstance().getService(UserService::class.java) as UserService
+                val response = service.acceptRide(getRideAcceptInput())
+                if(response.success) {
+                    response.result?.let {
+                        AppConfig.ride = it
+                        Utils.showAlertDialog(this@RideRequestActivity,
+                            "Success",
+                            "Ride has been booked",
+                            "OK",
+                            DialogInterface.OnClickListener { _, _ ->
+                                finish()
+                            })
+
+                        Toast.makeText(this@RideRequestActivity, "Ride has been booked. ", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else {
+                    Toast.makeText(this@RideRequestActivity, "Unable to accept ride", Toast.LENGTH_SHORT).show()
+                }
+            }
+            catch (ex: Exception) {
+                Toast.makeText(this@RideRequestActivity, ex.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

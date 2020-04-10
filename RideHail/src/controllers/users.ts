@@ -58,6 +58,17 @@ export const changeDriverStatus = async (request: Request, response: Response, n
     }
 };
 
+export const changeConsumerStatus = async (request: Request, response: Response, next: NextFunction) => {
+    const req = request.body;
+    const result: any = await consumerService.changeConsumerState(req);
+    if(result instanceof Consumers) {
+        response.send({ success: true, message: 'Status has been updated' });
+    }
+    else {
+        next(new HTTPException(400, result));
+    }
+};
+
 export const updateDriverLocation = async (request: Request, response: Response, next: NextFunction) => {
     const req = request.body;
     const result: any = await driverService.updateDriverLocation(req);

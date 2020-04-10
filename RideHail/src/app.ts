@@ -7,7 +7,7 @@ import * as users from './controllers/users';
 import * as auth from './controllers/auth';
 import errorMiddleware from './middlewares/error';
 
-import { FIND_NEARBY_DRIVER_URL } from './tasks/queues';
+import { FIND_NEARBY_DRIVER_URL, NOTIFY_CONSUMER_RIDE_ACCEPTED } from './tasks/queues';
 import Sockets from './sockets';
 import { getRedisConfig } from './redisClient';
 
@@ -40,6 +40,11 @@ class App {
             name: FIND_NEARBY_DRIVER_URL,
             hostId: 'Worker',
             redis: getRedisConfig()
+          },
+          {
+            name: NOTIFY_CONSUMER_RIDE_ACCEPTED,
+            hostId: 'Worker',
+            redis: getRedisConfig()
           }
         ]
       },
@@ -55,6 +60,7 @@ class App {
     this.app.get('/users/consumers', users.getAllConsumers);
     this.app.get('/users/drivers', users.getAllDrivers);
     this.app.post('/users/consumer/create', users.createConsumer);
+    this.app.post('/users/consumer/updateStatus', users.changeConsumerStatus);
     this.app.get('/users/consumer/:id', users.getConsumerProfile);
     this.app.post('/users/driver/create', users.createDriver);
     this.app.post('/users/driver/updateStatus', users.changeDriverStatus);

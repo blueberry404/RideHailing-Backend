@@ -67,6 +67,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onPostCreate(savedInstanceState)
         initLocationServices()
         onActionListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getUserProfile()
     }
 
