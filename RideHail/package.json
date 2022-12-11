@@ -28,7 +28,7 @@
     "bull": "^3.12.1",
     "bull-arena": "^2.6.4",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "p-iteration": "^1.1.8",
